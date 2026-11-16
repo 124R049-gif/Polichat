@@ -1,0 +1,386 @@
+[
+    {
+        "id": "gov_00",
+        "name": "政府広報オンライン/公官庁サイト一覧",
+        "type": "government",
+        "url": "https://www.gov-online.go.jp/governmentlinks/",
+        "priority": 1,
+        "rss": "none"
+    },
+    {
+        "id": "gov_01",
+        "name": "内閣官房",
+        "type": "government",
+        "url": "https://www.cas.go.jp/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_02",
+        "name": "内閣府法制局",
+        "type": "government",
+        "url": "https://www.clb.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_03",
+        "name": "人事院",
+        "type": "government",
+        "url": "https://www.jinji.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_04",
+        "name": "内閣府",
+        "type": "government",
+        "url": "https://www.cao.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_05",
+        "name": "宮内庁",
+        "type": "government",
+        "url": "https://www.kunaicho.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_06",
+        "name": "公正取引委員会",
+        "type": "government",
+        "url": "https://www.jftc.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_07",
+        "name": "国家公安委員会",
+        "type": "government",
+        "url": "https://www.npsc.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_08",
+        "name": "警察庁",
+        "type": "government",
+        "url": "https://www.npa.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_09",
+        "name": "個人情報保護委員会",
+        "type": "government",
+        "url": "https://www.ppc.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_10",
+        "name": "カジノ管理委員会",
+        "type": "government",
+        "url": "https://www.jcrc.go.jp/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_11",
+        "name": "金融庁",
+        "type": "government",
+        "url": "https://www.fsa.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_12",
+        "name": "消費者庁",
+        "type": "government",
+        "url": "https://www.caa.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_13",
+        "name": "中央防災会議",
+        "type": "government",
+        "url": "https://www.cfa.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_14",
+        "name": "デジタル庁",
+        "type": "government",
+        "url": "https://www.digital.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_15",
+        "name": "復興庁",
+        "type": "government",
+        "url": "https://www.reconstruction.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_16",
+        "name": "総務省",
+        "type": "government",
+        "url": "https://www.soumu.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_17",
+        "name": "公害等調査委員会",
+        "type": "government",
+        "url": "https://www.soumu.go.jp/kouchoi/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_18",
+        "name": "消防庁",
+        "type": "government",
+        "url": "https://www.fdma.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_19",
+        "name": "法務省",
+        "type": "government",
+        "url": "https://www.moj.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_20",
+        "name": "出入国在留管理庁",
+        "type": "government",
+        "url": "https://www.moj.go.jp/isa/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_21",
+        "name": "公安審査委員会",
+        "type": "government",
+        "url": "https://www.moj.go.jp/kouanshin/kouanshinsa_index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_22",
+        "name": "公安調査庁",
+        "type": "government",
+        "url": "https://www.moj.go.jp/psia/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_23",
+        "name": "外務省",
+        "type": "government",
+        "url": "https://www.mofa.go.jp/mofaj/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_24",
+        "name": "財務省",
+        "type": "government",
+        "url": "https://www.mof.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_25",
+        "name": "国税庁",
+        "type": "government",
+        "url": "https://www.nta.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_26",
+        "name": "文部科学省",
+        "type": "government",
+        "url": "https://www.mext.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_27",
+        "name": "スポーツ庁",
+        "type": "government",
+        "url": "https://www.mext.go.jp/sports/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_28",
+        "name": "文化庁",
+        "type": "government",
+        "url": "https://www.bunka.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_29",
+        "name": "厚生労働省",
+        "type": "government",
+        "url": "https://www.mhlw.go.jp/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_30",
+        "name": "中央労働委員会",
+        "type": "government",
+        "url": "https://www.mhlw.go.jp/churoi/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_31",
+        "name": "農林水産省",
+        "type": "government",
+        "url": "https://www.maff.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_32",
+        "name": "林野庁",
+        "type": "government",
+        "url": "https://www.rinya.maff.go.jp/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_33",
+        "name": "水産庁",
+        "type": "government",
+        "url": "https://www.jfa.maff.go.jp/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_34",
+        "name": "経済産業省",
+        "type": "government",
+        "url": "https://www.meti.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_35",
+        "name": "資源エネルギー庁",
+        "type": "government",
+        "url": "https://www.enecho.meti.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_36",
+        "name": "特許庁",
+        "type": "government",
+        "url": "https://www.jpo.go.jp/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_37",
+        "name": "中小企業庁",
+        "type": "government",
+        "url": "https://www.chusho.meti.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_38",
+        "name": "国土交通省",
+        "type": "government",
+        "url": "https://www.mlit.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_39",
+        "name": "観光庁",
+        "type": "government",
+        "url": "https://www.mlit.go.jp/kankocho/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_40",
+        "name": "気象庁",
+        "type": "government",
+        "url": "https://www.jma.go.jp/jma/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_41",
+        "name": "運輸安全委員会",
+        "type": "government",
+        "url": "https://jtsb.mlit.go.jp/index.html",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_42",
+        "name": "海上保安庁",
+        "type": "government",
+        "url": "https://www.kaiho.mlit.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_43",
+        "name": "環境省",
+        "type": "government",
+        "url": "https://www.env.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_44",
+        "name": "原子力規制委員会",
+        "type": "government",
+        "url": "https://www.nra.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_45",
+        "name": "防衛省",
+        "type": "government",
+        "url": "https://www.mod.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_46",
+        "name": "防衛装備庁",
+        "type": "government",
+        "url": "https://www.mod.go.jp/atla/",
+        "priority": "1",
+        "rss": "none"
+    },
+    {
+        "id": "gov_47",
+        "name": "会計検査院",
+        "type": "government",
+        "url": "https://www.jbaudit.go.jp/",
+        "priority": "1",
+        "rss": "none"
+    }
+]

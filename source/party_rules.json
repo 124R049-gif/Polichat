@@ -1,0 +1,41 @@
+{
+    "_説明": "国会会議録の議員発言の扱い。党規約などで党員・議員が党の決定に反する意見を表明しないよう定めている党は party_line (党の方針に沿う発言)、定めていない党と未確認の党は personal (議員個人の非公式見解・参考意見) とする。match は会議録の会派名に含まれる文字列。",
+    "checked": "2026-11-16",
+    "parties": [
+        {
+            "party": "日本共産党",
+            "match": ["日本共産党"],
+            "speech": "party_line",
+            "basis": "日本共産党規約 第5条(五)「党の決定に反する意見を、勝手に発表することはしない」。国際的・全国的な問題は「党の全国方針に反する意見を、勝手に発表することをしない」とも定める",
+            "url": "https://www.jcp.or.jp/jcp/Kiyaku/"
+        },
+        {
+            "party": "自由民主党",
+            "match": ["自由民主党"],
+            "speech": "party_line",
+            "basis": "自由民主党規律規約 第9条一イ「公の場所又は公に発表した文書で、党の方針又は政策を公然と非難する行為」を処分の対象とする。異論の表明そのものではなく公然とした非難を禁じる点で共産党より範囲が狭いが、party_line とする (2026-11-16 決定)",
+            "url": "https://storage.jimin.jp/pdf/aboutus/organization.pdf#page=67"
+        },
+        {
+            "party": "公明党",
+            "match": ["公明党"],
+            "speech": "personal",
+            "basis": "公明党規約 第90条は「党議または党の最高執行機関の決定に背く行為」等を処分の対象とするが、意見の表明についての定めはない",
+            "url": "https://www.komei.or.jp/wp-content/uploads/00%E3%80%80%E5%85%AC%E6%98%8E%E5%85%9A%E8%A6%8F%E7%B4%84%EF%BC%8820260314%EF%BC%89.pdf"
+        },
+        {
+            "party": "日本維新の会",
+            "match": ["日本維新の会"],
+            "speech": "personal",
+            "basis": "日本維新の会 党紀規則 第2条三ロは「党大会等の決定事項に違背する等、本党の方針に反する行為」を処分の対象とするが、意見の表明についての定めはない",
+            "url": "https://o-ishin.jp/about/agreement/"
+        },
+        {
+            "party": "社会民主党",
+            "match": ["社会民主党"],
+            "speech": "personal",
+            "basis": "社会民主党 党則 (2013年版) の処分規定は政治倫理違反などで、意見の表明についての定めはない。現行版は未確認",
+            "url": "https://politicalpartydb.org/wp-content/uploads/Statutes/Japan/Japan_SDP_2013.pdf"
+        }
+    ]
+}

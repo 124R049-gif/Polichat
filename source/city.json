@@ -1,0 +1,3248 @@
+[
+    {
+        "code": "011002",
+        "name": "札幌市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012025",
+        "name": "函館市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012033",
+        "name": "小樽市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012068",
+        "name": "旭川市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012050",
+        "name": "室蘭市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012068",
+        "name": "釧路市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012076",
+        "name": "帯広市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012041",
+        "name": "北見市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012092",
+        "name": "夕張市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012106",
+        "name": "岩見沢市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012114",
+        "name": "網走市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012122",
+        "name": "留萌市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012130",
+        "name": "苫小牧市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012131",
+        "name": "千歳市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011131",
+        "name": "恵庭市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011131",
+        "name": "北広島市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011149",
+        "name": "石狩市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011157",
+        "name": "小樽市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011165",
+        "name": "岩見沢市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011173",
+        "name": "室蘭市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011181",
+        "name": "苫小牧市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011190",
+        "name": "夕張市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011208",
+        "name": "函館市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011216",
+        "name": "北斗市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011224",
+        "name": "江差町",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011224",
+        "name": "せたな町",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012025",
+        "name": "函館市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012033",
+        "name": "小樽市 ",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012041",
+        "name": "旭川市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "012050",
+        "name": "室蘭市",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "011224",
+        "name": "せたな町",
+        "prefecture_code": "010001",
+        "type": "city"
+    },
+    {
+        "code": "131011",
+        "name": "千代田区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131029",
+        "name": "中央区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131037",
+        "name": "港区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131045",
+        "name": "新宿区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131053",
+        "name": "文京区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131061",
+        "name": "台東区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131079",
+        "name": "墨田区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131087",
+        "name": "江東区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131095",
+        "name": "品川区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131103",
+        "name": "目黒区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131111",
+        "name": "大田区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131129",
+        "name": "世田谷区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131137",
+        "name": "渋谷区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131145",
+        "name": "中野区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131153",
+        "name": "杉並区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131161",
+        "name": "豊島区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131179",
+        "name": "北区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131187",
+        "name": "荒川区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131195",
+        "name": "板橋区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131203",
+        "name": "練馬区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131211",
+        "name": "足立区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131229",
+        "name": "葛飾区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "131237",
+        "name": "江戸川区",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132018",
+        "name": "八王子市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132026",
+        "name": "立川市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132034",
+        "name": "武蔵野市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132042",
+        "name": "三鷹市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132051",
+        "name": "青梅市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132069",
+        "name": "府中市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132077",
+        "name": "昭島市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132085",
+        "name": "調布市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132093",
+        "name": "町田市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132101",
+        "name": "小金井市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132119",
+        "name": "小平市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132127",
+        "name": "日野市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132135",
+        "name": "東村山市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132143",
+        "name": "国分寺市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132151",
+        "name": "国立市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132169",
+        "name": "狛江市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132177",
+        "name": "東大和市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132185",
+        "name": "清瀬市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132193",
+        "name": "東村山市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132201",
+        "name": "東久留米市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132219",
+        "name": "武蔵村山市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132227",
+        "name": "多摩市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132235",
+        "name": "稲城市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132243",
+        "name": "羽村市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132251",
+        "name": "あきる野市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "132269",
+        "name": "西東京市",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "133011",
+        "name": "瑞穂町",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "133029",
+        "name": "日の出町",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "133037",
+        "name": "檜原村",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "133045",
+        "name": "奥多摩町",
+        "prefecture_code": "130001",
+        "type": "city"
+    },
+    {
+        "code": "141011",
+        "name": "横浜市鶴見区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141029",
+        "name": "横浜市神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141037",
+        "name": "横浜市西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141045",
+        "name": "横浜市中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141053",
+        "name": "横浜市南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141061",
+        "name": "横浜市港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141079",
+        "name": "横浜市保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141087",
+        "name": "横浜市旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141095",
+        "name": "横浜市磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141103",
+        "name": "横浜市金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141111",
+        "name": "横浜市港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141129",
+        "name": "横浜市緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141137",
+        "name": "横浜市青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "141145",
+        "name": "横浜市都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "142017",
+        "name": "川崎市川崎区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "142025",
+        "name": "川崎市幸区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "142033",
+        "name": "川崎市中原区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "142041",
+        "name": "川崎市高津区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "142059",
+        "name": "川崎市多摩区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "142067",
+        "name": "川崎市宮前区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "142075",
+        "name": "川崎市麻生区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143013",
+        "name": "相模原市緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143021",
+        "name": "相模原市中央区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143039",
+        "name": "相模原市南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143110",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143128",
+        "name": "平塚市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143136",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143144",
+        "name": "藤沢市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143152",
+        "name": "茅ヶ崎市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143161",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143179",
+        "name": "三浦市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143187",
+        "name": "秦野市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143195",
+        "name": "厚木市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143203",
+        "name": "大和市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143211",
+        "name": "海老名市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143229",
+        "name": "座間市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143237",
+        "name": "南足柄市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143245",
+        "name": "綾瀬市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143626",
+        "name": "港南台",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143634",
+        "name": "金沢八景",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143642",
+        "name": "大船",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143651",
+        "name": "戸塚",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143669",
+        "name": "保土ヶ谷",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143677",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143685",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143693",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143701",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143719",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143727",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143735",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143743",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143751",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143769",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143777",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143785",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143793",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143801",
+        "name": "鶴見区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143819",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143827",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143835",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143843",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143851",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143869",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143877",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143885",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143893",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143901",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143919",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143927",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143935",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143943",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143951",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143969",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143977",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143985",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "143993",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144000",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144018",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144026",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144034",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144042",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144051",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144069",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144077",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144085",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144093",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144101",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144119",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144127",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144135",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144143",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144151",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144169",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144177",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144185",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144193",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144201",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144219",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144227",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144235",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144243",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144251",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144269",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144277",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144285",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144293",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144301",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144319",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144327",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144335",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144343",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144351",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144369",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144377",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144385",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144393",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144401",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144419",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144427",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144435",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144443",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144451",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144469",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144477",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144485",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144493",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144501",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144519",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144527",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144535",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144543",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144551",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144569",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144577",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144585",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144593",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144601",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144619",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144627",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144635",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144643",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144651",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144669",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144677",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144685",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144693",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144701",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144719",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144727",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144735",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144743",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144751",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144769",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144777",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144785",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144793",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144801",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144819",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144827",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144835",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144843",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144851",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144869",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144877",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144885",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144893",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144901",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144919",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144927",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144935",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144943",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144951",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144969",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144977",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144985",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "144993",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145000",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145018",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145026",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145034",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145042",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145050",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145069",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145077",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145085",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145093",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145101",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145119",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145127",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145135",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145143",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145151",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145169",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145177",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145185",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145193",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145201",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145219",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145227",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145235",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145243",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145251",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145269",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145277",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145285",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145293",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145301",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145319",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145327",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145335",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145343",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145351",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145369",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145377",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145385",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145393",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145401",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145419",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145427",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145435",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145443",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145451",
+        "name": "瀬谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145469",
+        "name": "栄区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145477",
+        "name": "戸塚区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145485",
+        "name": "保土ケ谷区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145493",
+        "name": "旭区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145501",
+        "name": "磯子区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145519",
+        "name": "金沢区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145527",
+        "name": "港南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145535",
+        "name": "南区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145543",
+        "name": "中区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145551",
+        "name": "西区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145569",
+        "name": "神奈川区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145577",
+        "name": "港北区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145585",
+        "name": "都筑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145593",
+        "name": "青葉区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "145601",
+        "name": "緑区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "146016",
+        "name": "宮前区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "146024",
+        "name": "多摩区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "146032",
+        "name": "麻生区",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "147012",
+        "name": "厚木市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "147029",
+        "name": "大和市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "147037",
+        "name": "海老名市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "147045",
+        "name": "座間市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "147053",
+        "name": "綾瀬市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "147061",
+        "name": "愛川町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "147079",
+        "name": "清川村",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "148011",
+        "name": "寒川町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "148029",
+        "name": "大磯町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "148037",
+        "name": "二宮町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "148045",
+        "name": "中井町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "148053",
+        "name": "大井町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "148061",
+        "name": "松田町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "148079",
+        "name": "山北町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "148087",
+        "name": "開成町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149016",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149024",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149032",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149040",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149058",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149066",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149074",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149082",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149090",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149108",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149116",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149124",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149132",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149140",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149158",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149166",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149174",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149182",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149190",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149208",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149216",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149224",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149232",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149240",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149258",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149266",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149274",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149282",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149290",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149308",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149316",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149324",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149332",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149340",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149358",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149366",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149374",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149382",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149390",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149408",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149416",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149424",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149432",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149440",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149458",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149466",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149474",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149482",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149490",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149508",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149516",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149524",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149532",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149540",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149558",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149566",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149574",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149582",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149590",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149608",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149616",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149624",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149632",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149640",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149658",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149666",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149674",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149682",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149690",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149708",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149716",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149724",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149732",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149740",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149758",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149766",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149774",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149782",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149790",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149808",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149816",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149824",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149832",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149840",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149858",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149866",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149874",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149882",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149890",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149908",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149916",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149924",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149932",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149940",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149958",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149966",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149974",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149982",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "149990",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150006",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150014",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150022",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150030",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150048",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150056",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150064",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150072",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150080",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150098",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150106",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150114",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150122",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150130",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150148",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150156",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150164",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150172",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150180",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150198",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150206",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150214",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150222",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150230",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150248",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150256",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150264",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150272",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150280",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150298",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150306",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150314",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150322",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150330",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150348",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150356",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150364",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150372",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150380",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150398",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150406",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150414",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150422",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150430",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150448",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150456",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150464",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150472",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150480",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150498",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150506",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150514",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150522",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150530",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150548",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150556",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150564",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150572",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150580",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150598",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150606",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150614",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150622",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150630",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150648",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150656",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150664",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150672",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150680",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150698",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150706",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150714",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150722",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150730",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150748",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150756",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150764",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150772",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150780",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150798",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150806",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150814",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150822",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150830",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150848",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150856",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150864",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150872",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150880",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150898",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150906",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150914",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150922",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150930",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150948",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150956",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150964",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150972",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150980",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "150998",
+        "name": "鎌倉市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "151005",
+        "name": "逗子市",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "151013",
+        "name": "葉山町",
+        "prefecture_code": "140001",
+        "type": "city"
+    },
+    {
+        "code": "151021",
+        "name": "横須賀市",
+        "prefecture_code": "140001",
+        "type": "city"
+    }
+]

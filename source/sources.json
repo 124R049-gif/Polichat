@@ -1,0 +1,461 @@
+[
+    {
+        "id": "mhlw",
+        "name": "厚生労働省",
+        "org_type": "government",
+        "url": "https://www.mhlw.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.mhlw.go.jp/stf/news.rdf"
+            }
+        ]
+    },
+    {
+        "id": "soumu",
+        "name": "総務省",
+        "org_type": "government",
+        "url": "https://www.soumu.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.soumu.go.jp/news.rdf"
+            }
+        ]
+    },
+    {
+        "id": "meti",
+        "name": "経済産業省",
+        "org_type": "government",
+        "url": "https://www.meti.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.meti.go.jp/ml_index_release_atom.xml"
+            }
+        ],
+        "enabled": false,
+        "note": "記事ページが自動取得に対して HTTP 403 を返すため停止中 (RSSは取得可)"
+    },
+    {
+        "id": "kantei",
+        "name": "首相官邸",
+        "org_type": "government",
+        "url": "https://www.kantei.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.kantei.go.jp/index-jnews.rdf"
+            }
+        ]
+    },
+    {
+        "id": "digital",
+        "name": "デジタル庁",
+        "org_type": "government",
+        "url": "https://www.digital.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.digital.go.jp/rss/news.xml"
+            }
+        ]
+    },
+    {
+        "id": "mof",
+        "name": "財務省",
+        "org_type": "government",
+        "url": "https://www.mof.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.mof.go.jp/news.rss"
+            }
+        ]
+    },
+    {
+        "id": "cao",
+        "name": "内閣府",
+        "org_type": "government",
+        "url": "https://www.cao.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.cao.go.jp/rss/news.rdf"
+            }
+        ]
+    },
+    {
+        "id": "mext",
+        "name": "文部科学省",
+        "org_type": "government",
+        "url": "https://www.mext.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.mext.go.jp/b_menu/news/index.rdf"
+            }
+        ]
+    },
+    {
+        "id": "mlit",
+        "name": "国土交通省",
+        "org_type": "government",
+        "url": "https://www.mlit.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.mlit.go.jp/pressrelease.rdf"
+            }
+        ]
+    },
+    {
+        "id": "moj",
+        "name": "法務省",
+        "org_type": "government",
+        "url": "https://www.moj.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.moj.go.jp/news.xml"
+            }
+        ]
+    },
+    {
+        "id": "maff",
+        "name": "農林水産省",
+        "org_type": "government",
+        "url": "https://www.maff.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.maff.go.jp/j/press/rss.xml"
+            }
+        ]
+    },
+    {
+        "id": "cdp",
+        "name": "立憲民主党",
+        "org_type": "party",
+        "url": "https://cdp-japan.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://cdp-japan.jp/news",
+                "include": "/news/\\d+_\\d+$"
+            }
+        ]
+    },
+    {
+        "id": "jcp",
+        "name": "日本共産党",
+        "org_type": "party",
+        "url": "https://www.jcp.or.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.jcp.or.jp/web_policy/",
+                "include": "/web_policy/\\d+\\.html$"
+            }
+        ]
+    },
+    {
+        "id": "dpfp",
+        "name": "国民民主党",
+        "org_type": "party",
+        "url": "https://new-kokumin.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://new-kokumin.jp/news",
+                "include": "/news/[a-z]+/\\d+_\\d+$"
+            }
+        ]
+    },
+    {
+        "id": "rengo",
+        "name": "連合(日本労働組合総連合会)",
+        "org_type": "union",
+        "url": "https://www.jtuc-rengo.or.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.jtuc-rengo.or.jp/news/article_list.php?kind=1",
+                "include": "article_detail\\.php"
+            }
+        ]
+    },
+    {
+        "id": "zenroren",
+        "name": "全労連(全国労働組合総連合)",
+        "org_type": "union",
+        "url": "https://www.zenroren.gr.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.zenroren.gr.jp/jp/opinion/index.html",
+                "include": "/jp/opinion/\\d+/opinion[\\w-]+\\.html$"
+            }
+        ]
+    },
+    {
+        "id": "keidanren",
+        "name": "経団連(日本経済団体連合会)",
+        "org_type": "business",
+        "url": "https://www.keidanren.or.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.keidanren.or.jp/policy/index.html",
+                "include": "/policy/\\d{4}/\\d+\\.html$"
+            }
+        ]
+    },
+    {
+        "id": "fsa",
+        "name": "金融庁",
+        "org_type": "government",
+        "url": "https://www.fsa.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.fsa.go.jp/fsaNewsListAll_rss2.xml"
+            }
+        ]
+    },
+    {
+        "id": "caa",
+        "name": "消費者庁",
+        "org_type": "government",
+        "url": "https://www.caa.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.caa.go.jp/news.rss"
+            }
+        ]
+    },
+    {
+        "id": "npa",
+        "name": "警察庁",
+        "org_type": "government",
+        "url": "https://www.npa.go.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.npa.go.jp/newlyarrived/rss20.xml"
+            }
+        ]
+    },
+    {
+        "id": "env",
+        "name": "環境省",
+        "org_type": "government",
+        "url": "https://www.env.go.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.env.go.jp/press/index.html",
+                "include": "/press/press_\\d+\\.html$"
+            }
+        ]
+    },
+    {
+        "id": "mod",
+        "name": "防衛省",
+        "org_type": "government",
+        "url": "https://www.mod.go.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.mod.go.jp/j/press/news/index.html",
+                "include": "/j/press/news/\\d{4}/\\d{2}/\\d+[a-z]\\.html$"
+            }
+        ]
+    },
+    {
+        "id": "ppc",
+        "name": "個人情報保護委員会",
+        "org_type": "government",
+        "url": "https://www.ppc.go.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.ppc.go.jp/news/press/",
+                "include": "/news/press/\\d{4}/\\d+_houdou"
+            }
+        ]
+    },
+    {
+        "id": "boj",
+        "name": "日本銀行",
+        "org_type": "public",
+        "url": "https://www.boj.or.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.boj.or.jp/rss/whatsnew.xml"
+            }
+        ]
+    },
+    {
+        "id": "jimin",
+        "name": "自由民主党",
+        "org_type": "party",
+        "url": "https://www.jimin.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "http://rss.jimin.jp/f1887/index.rdf"
+            }
+        ]
+    },
+    {
+        "id": "komei",
+        "name": "公明党",
+        "org_type": "party",
+        "url": "https://www.komei.or.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.komei.or.jp/komeinews/feed/"
+            }
+        ]
+    },
+    {
+        "id": "ishin",
+        "name": "日本維新の会",
+        "org_type": "party",
+        "url": "https://o-ishin.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://o-ishin.jp/news/",
+                "include": "/news/\\d{4}/\\d{2}/\\d{2}/\\d+\\.html$"
+            }
+        ]
+    },
+    {
+        "id": "reiwa",
+        "name": "れいわ新選組",
+        "org_type": "party",
+        "url": "https://reiwa-shinsengumi.com/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://reiwa-shinsengumi.com/feed/"
+            }
+        ]
+    },
+    {
+        "id": "sdp",
+        "name": "社会民主党",
+        "org_type": "party",
+        "url": "https://sdp.or.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://sdp.or.jp/feed/"
+            }
+        ]
+    },
+    {
+        "id": "sanseito",
+        "name": "参政党",
+        "org_type": "party",
+        "url": "https://sanseito.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://sanseito.jp/feed/"
+            }
+        ]
+    },
+    {
+        "id": "jichiro",
+        "name": "自治労(全日本自治団体労働組合)",
+        "org_type": "union",
+        "url": "https://www.jichiro.gr.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.jichiro.gr.jp/atom.xml"
+            }
+        ]
+    },
+    {
+        "id": "jcci",
+        "name": "日本商工会議所",
+        "org_type": "business",
+        "url": "https://www.jcci.or.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.jcci.or.jp/",
+                "include": "/news/news/\\d{4}/\\d+\\.html$"
+            }
+        ]
+    },
+    {
+        "id": "nichibenren",
+        "name": "日本弁護士連合会",
+        "org_type": "association",
+        "url": "https://www.nichibenren.or.jp/",
+        "entries": [
+            {
+                "type": "html",
+                "url": "https://www.nichibenren.or.jp/document/statement.html",
+                "include": "/document/statement/year/\\d{4}/\\d+(_\\d+)?\\.html$"
+            },
+            {
+                "type": "html",
+                "url": "https://www.nichibenren.or.jp/document/opinion.html",
+                "include": "/document/opinion/year/\\d{4}/\\d+(_\\d+)?\\.html$"
+            }
+        ]
+    },
+    {
+        "id": "med",
+        "name": "日本医師会",
+        "org_type": "association",
+        "url": "https://www.med.or.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.med.or.jp/atom.xml"
+            }
+        ]
+    },
+    {
+        "id": "nurse",
+        "name": "日本看護協会",
+        "org_type": "association",
+        "url": "https://www.nurse.or.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.nurse.or.jp/news/rss.xml"
+            }
+        ]
+    },
+    {
+        "id": "nga",
+        "name": "全国知事会",
+        "org_type": "local",
+        "url": "https://www.nga.gr.jp/",
+        "entries": [
+            {
+                "type": "feed",
+                "url": "https://www.nga.gr.jp/news/rss.xml"
+            }
+        ]
+    },
+    {
+        "id": "kokkai",
+        "name": "国会会議録",
+        "org_type": "diet",
+        "url": "https://kokkai.ndl.go.jp/",
+        "type": "kokkai",
+        "days": 45
+    }
+]

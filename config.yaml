@@ -1,0 +1,66 @@
+# 日本社会政治監視機構 設定ファイル
+# パスはこのファイルのあるフォルダからの相対パス
+
+paths:
+  db: "data/crawler.db"
+  raw_dir: "data/raw"            # 取得した原本 (PDF/HTML) の保存先
+  sources: "source/sources.json" # 収集対象の台帳
+  taxonomy: "source/taxonomy.json"
+
+crawl:
+  user_agent: "AntigravityCrawler/1.0"
+  delay_seconds: 2.0        # 同一ホストへのアクセス間隔
+  timeout_seconds: 20
+  max_bytes: 31457280       # 1ファイルの上限 (30MB)
+  max_new_per_source: 20    # 1回の実行で1ソースから新規取得する文書数
+  max_attachments: 5        # 1ページから取得する添付 (PDF/DOCX) の数
+  respect_robots: true
+
+chunk:
+  target_chars: 800         # 1チャンクの目安文字数
+  overlap_chars: 100
+
+# 一次資料ではないニュース見出し (話題の検知用。本文は保存しない)
+news_rss:
+  - "https://news.yahoo.co.jp/rss/topics/top-picks.xml"
+  - "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja"
+
+# LLM (Ollama)。SSHのポート転送で localhost に見えている前提
+# gpu_hours.always が true なら時間帯に関係なく GPU 用を使う (利用時間の制限なし)。
+# false なら GPU は gpu_hours の時間帯だけ使い、それ以外は CPU 用を使う (CPU では回答を受け付けない)
+llm:
+  gpu_hours:
+    always: true          # 2026-11-16 利用時間の制限を設けない方針に変更
+    start: "21:00"
+    end: "09:00"
+    free_days: ["sun"]    # 終日 GPU を使ってよい曜日 (mon tue wed thu fri sat sun)
+  gpu:
+    url: "http://localhost:11434"
+    chat_model: "gemma4:e4b"      # gpt-oss は引用された他者の主張を発行元の主張と取り違えた
+    tag_model: "gemma4:e4b"
+  cpu:
+    url: "http://localhost:11435"
+    chat_model: "gemma4:latest"
+    tag_model: "gemma4:latest"      # GPU側の gemma4:e4b と同一モデル
+  # 埋め込みは軽いので常に CPU 用を使う (モデルを変えたら全件作り直しが必要)
+  embed:
+    url: "http://localhost:11435"
+    model: "embeddinggemma:latest"
+  num_ctx: 12288
+  timeout_seconds: 900
+
+rag:
+  top_k: 8                # 回答に使うチャンク数
+  max_chunks_per_document: 3  # うち同じ文書から採用する上限
+  max_chunks_per_source: 2    # うち同じ機関 (国会は同じ会派・役職) から採用する上限 (枠が余れば緩める)
+  tag_input_chars: 2500   # タグ付け時にLLMへ渡す本文の先頭文字数
+
+# ログインと利用回数の制限 (server/auth.py)
+auth:
+  daily_limit: 20           # 1人1日あたりの質問回数 (利用者ごとに user limit で変更可)
+  session_days: 30          # ログインの有効日数
+  min_password_length: 10
+  cookie_secure: false      # HTTPS で公開するときは true (Cookie を HTTPS でのみ送る)
+  login_max_failures: 5     # 同じ利用者名でこの回数ログインに失敗したら
+  login_max_failures_per_ip: 20  # 同じ接続元 (プロキシ経由だと全員同じに見える) での上限
+  login_lock_minutes: 15    # この時間は同じ名前・接続元からのログインを受け付けない

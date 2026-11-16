@@ -1,0 +1,284 @@
+[
+    {
+        "code": "010001",
+        "name": "北海道",
+        "type": "prefecture",
+        "url": "https://www.pref.hokkaido.lg.jp/"
+    },
+    {
+        "code": "020001",
+        "name": "青森県",
+        "type": "prefecture",
+        "url": "https://www.pref.aomori.lg.jp/"
+    },
+    {
+        "code": "030001",
+        "name": "岩手県",
+        "type": "prefecture",
+        "url": "https://www.pref.iwate.lg.jp/"
+    },
+    {
+        "code": "040001",
+        "name": "宮城県",
+        "type": "prefecture",
+        "url": "https://www.pref.miyagi.lg.jp/"
+    },
+    {
+        "code": "050001",
+        "name": "秋田県",
+        "type": "prefecture",
+        "url": "https://www.pref.akita.lg.jp/"
+    },
+    {
+        "code": "060001",
+        "name": "山形県",
+        "type": "prefecture",
+        "url": "https://www.pref.yamagata.lg.jp/"
+    },
+    {
+        "code": "070001",
+        "name": "福島県",
+        "type": "prefecture",
+        "url": "https://www.pref.fukushima.lg.jp/"
+    },
+    {
+        "code": "080001",
+        "name": "茨城県",
+        "type": "prefecture",
+        "url": "https://www.pref.ibaraki.lg.jp/"
+    },
+    {
+        "code": "090001",
+        "name": "栃木県",
+        "type": "prefecture",
+        "url": "https://www.pref.tochigi.lg.jp/"
+    },
+    {
+        "code": "100001",
+        "name": "群馬県",
+        "type": "prefecture",
+        "url": "https://www.pref.gunma.lg.jp/"
+    },
+    {
+        "code": "110001",
+        "name": "埼玉県",
+        "type": "prefecture",
+        "url": "https://www.pref.saitama.lg.jp/"
+    },
+    {
+        "code": "120001",
+        "name": "千葉県",
+        "type": "prefecture",
+        "url": "https://www.pref.chiba.lg.jp/"
+    },
+    {
+        "code": "130001",
+        "name": "東京都",
+        "type": "prefecture",
+        "url": "https://www.metro.tokyo.lg.jp/"
+    },
+    {
+        "code": "140001",
+        "name": "神奈川県",
+        "type": "prefecture",
+        "url": "https://www.pref.kanagawa.lg.jp/"
+    },
+    {
+        "code": "150001",
+        "name": "新潟県",
+        "type": "prefecture",
+        "url": "https://www.pref.niigata.lg.jp/"
+    },
+    {
+        "code": "160001",
+        "name": "富山県",
+        "type": "prefecture",
+        "url": "https://www.pref.toyama.lg.jp/"
+    },
+    {
+        "code": "170001",
+        "name": "石川県",
+        "type": "prefecture",
+        "url": "https://www.pref.ishikawa.lg.jp/"
+    },
+    {
+        "code": "180001",
+        "name": "福井県",
+        "type": "prefecture",
+        "url": "https://www.pref.fukui.lg.jp/"
+    },
+    {
+        "code": "190001",
+        "name": "山梨県",
+        "type": "prefecture",
+        "url": "https://www.pref.yamanashi.lg.jp/"
+    },
+    {
+        "code": "200001",
+        "name": "長野県",
+        "type": "prefecture",
+        "url": "https://www.pref.nagano.lg.jp/"
+    },
+    {
+        "code": "210001",
+        "name": "岐阜県",
+        "type": "prefecture",
+        "url": "https://www.pref.gifu.lg.jp/"
+    },
+    {
+        "code": "220001",
+        "name": "静岡県",
+        "type": "prefecture",
+        "url": "https://www.pref.shizuoka.lg.jp/"
+    },
+    {
+        "code": "230001",
+        "name": "愛知県",
+        "type": "prefecture",
+        "url": "https://www.pref.aichi.lg.jp/"
+    },
+    {
+        "code": "240001",
+        "name": "三重県",
+        "type": "prefecture",
+        "url": "https://www.pref.mie.lg.jp/"
+    },
+    {
+        "code": "250001",
+        "name": "滋賀県",
+        "type": "prefecture",
+        "url": "https://www.pref.shiga.lg.jp/"
+    },
+    {
+        "code": "260001",
+        "name": "京都府",
+        "type": "prefecture",
+        "url": "https://www.pref.kyoto.lg.jp/"
+    },
+    {
+        "code": "270001",
+        "name": "大阪府",
+        "type": "prefecture",
+        "url": "https://www.pref.osaka.lg.jp/"
+    },
+    {
+        "code": "280001",
+        "name": "兵庫県",
+        "type": "prefecture",
+        "url": "https://www.pref.hyogo.lg.jp/"
+    },
+    {
+        "code": "290001",
+        "name": "奈良県",
+        "type": "prefecture",
+        "url": "https://www.pref.nara.lg.jp/"
+    },
+    {
+        "code": "300001",
+        "name": "和歌山県",
+        "type": "prefecture",
+        "url": "https://www.pref.wakayama.lg.jp/"
+    },
+    {
+        "code": "310001",
+        "name": "鳥取県",
+        "type": "prefecture",
+        "url": "https://www.pref.tottori.lg.jp/"
+    },
+    {
+        "code": "320001",
+        "name": "島根県",
+        "type": "prefecture",
+        "url": "https://www.pref.shimane.lg.jp/"
+    },
+    {
+        "code": "330001",
+        "name": "岡山県",
+        "type": "prefecture",
+        "url": "https://www.pref.okayama.lg.jp/"
+    },
+    {
+        "code": "340001",
+        "name": "広島県",
+        "type": "prefecture",
+        "url": "https://www.pref.hiroshima.lg.jp/"
+    },
+    {
+        "code": "350001",
+        "name": "山口県",
+        "type": "prefecture",
+        "url": "https://www.pref.yamaguchi.lg.jp/"
+    },
+    {
+        "code": "360001",
+        "name": "徳島県",
+        "type": "prefecture",
+        "url": "https://www.pref.tokushima.lg.jp/"
+    },
+    {
+        "code": "370001",
+        "name": "香川県",
+        "type": "prefecture",
+        "url": "https://www.pref.kagawa.lg.jp/"
+    },
+    {
+        "code": "380001",
+        "name": "愛媛県",
+        "type": "prefecture",
+        "url": "https://www.pref.ehime.lg.jp/"
+    },
+    {
+        "code": "390001",
+        "name": "高知県",
+        "type": "prefecture",
+        "url": "https://www.pref.kochi.lg.jp/"
+    },
+    {
+        "code": "400001",
+        "name": "福岡県",
+        "type": "prefecture",
+        "url": "https://www.pref.fukuoka.lg.jp/"
+    },
+    {
+        "code": "410001",
+        "name": "佐賀県",
+        "type": "prefecture",
+        "url": "https://www.pref.saga.lg.jp/"
+    },
+    {
+        "code": "420001",
+        "name": "長崎県",
+        "type": "prefecture",
+        "url": "https://www.pref.nagasaki.lg.jp/"
+    },
+    {
+        "code": "430001",
+        "name": "熊本県",
+        "type": "prefecture",
+        "url": "https://www.pref.kumamoto.jp/"
+    },
+    {
+        "code": "440001",
+        "name": "大分県",
+        "type": "prefecture",
+        "url": "https://www.pref.oita.lg.jp/"
+    },
+    {
+        "code": "450001",
+        "name": "宮崎県",
+        "type": "prefecture",
+        "url": "https://www.pref.miyazaki.lg.jp/"
+    },
+    {
+        "code": "460001",
+        "name": "鹿児島県",
+        "type": "prefecture",
+        "url": "https://www.pref.kagoshima.lg.jp/"
+    },
+    {
+        "code": "470001",
+        "name": "沖縄県",
+        "type": "prefecture",
+        "url": "https://www.pref.okinawa.lg.jp/"
+    }
+]

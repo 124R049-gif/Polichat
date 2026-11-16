@@ -1,0 +1,8 @@
+requests
+beautifulsoup4
+feedparser
+PyYAML
+pymupdf
+numpy
+fastapi
+uvicorn

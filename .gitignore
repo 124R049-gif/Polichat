@@ -1,0 +1,13 @@
+__pycache__/
+data/raw/
+data/*.db
+data/*.db-*
+*.pyc
+
+# 個人の作業記録・ツール設定 (公開しない)
+OLDLOG.txt
+.claude/
+
+# 環境ごとの設定や秘密情報を置く場合
+.env
+*.local.yaml
