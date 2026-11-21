@@ -12,7 +12,8 @@ from database.db import get_connection
 MIN_CHARS = 50              # これ未満は本文なしとみなす
 MIN_CHARS_PER_PDF_PAGE = 30  # 平均がこれ未満のPDFはスキャン画像とみなす
 _NOISE_TAGS = ["script", "style", "noscript", "nav", "header", "footer", "aside", "form", "iframe"]
-_MAIN_SELECTORS = ["main", "article", "[role=main]", "#main", "#contents", "#content", ".main"]
+# 先頭ほど優先。note の記事本文 ([data-name=body]) は題名・タグ欄を含まない
+_MAIN_SELECTORS = ["[data-name=body]", "main", "article", "[role=main]", "#main", "#contents", "#content", ".main"]
 _W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 

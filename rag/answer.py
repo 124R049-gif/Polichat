@@ -9,7 +9,9 @@ from rag.vector_db import vector_search
 
 ORG_LABELS = {"government": "行政機関", "public": "公的機関", "party": "政党", "union": "労働組合",
               "business": "経済団体", "association": "職能団体", "local": "地方団体",
-              "diet": "国会会議録"}
+              "diet": "国会会議録", "commentary": "論評 (非公式)"}
+# 非公式の資料 (個人の論評・解説)。公式資料とは別枠で検索し、回答でも別の節に分ける
+UNOFFICIAL = {"commentary"}
 # 国会会議録の発言者のうち、会派ではなく役職で記録されたもの (大臣の答弁、官僚の説明など)
 _ROLE = re.compile(r"大臣|長官|院長|局長|総裁|理事|審議官|統括官|部長|事務総長|政務官|参考人|議長|委員長|官房|次長|課長")
 with open(BASE_DIR / "source" / "party_rules.json", encoding="utf-8") as f:
@@ -42,14 +44,17 @@ RULES = """【回答の規則】
 7. 表は使わず、見出しと箇条書きで簡潔に書く。"""
 
 
-def allowed_chunks(conn, filters):
+def allowed_chunks(conn, filters, unofficial=False):
     """検索してよいチャンクIDの集合を返す。除外判定された文書 (名簿・外国語版など) は常に除く。
 
     filters: {"org_types": [...], "fields": [...], "date_from": "YYYY-MM-DD", "date_to": ...}
     期間を指定すると、公開日が分からない文書は対象外になる。
+    unofficial が真なら非公式の資料だけ、偽なら公式の資料だけを対象にする。
     """
     filters = filters or {}
-    where, params = ["d.exclude_reason IS NULL", "c.exclude_reason IS NULL"], []
+    where = ["d.exclude_reason IS NULL", "c.exclude_reason IS NULL",
+             f"s.org_type {'' if unofficial else 'NOT '}IN ({','.join('?' * len(UNOFFICIAL))})"]
+    params = sorted(UNOFFICIAL)
     if filters.get("org_types"):
         where.append(f"s.org_type IN ({','.join('?' * len(filters['org_types']))})")
         params += filters["org_types"]
@@ -90,10 +95,13 @@ def _origin(row):
     return (row["source_id"], row["affiliation"])
 
 
-def retrieve(conn, question, top_k=None, filters=None):
-    """両方の検索結果を順位で統合 (RRF) し、上位チャンクを出典情報つきで返す。"""
-    top_k = top_k or RAG["top_k"]
-    allowed = allowed_chunks(conn, filters)
+def retrieve(conn, question, top_k=None, filters=None, unofficial=False):
+    """両方の検索結果を順位で統合 (RRF) し、上位チャンクを出典情報つきで返す。
+    unofficial が真なら非公式の資料から探す (件数は unofficial_top_k)。"""
+    top_k = top_k or (RAG["unofficial_top_k"] if unofficial else RAG["top_k"])
+    allowed = allowed_chunks(conn, filters, unofficial)
+    if not allowed:
+        return []
     fused = {}
     for results in (keyword_search(conn, question, allowed=allowed),
                     vector_search(conn, question, CANDIDATES, allowed)):
@@ -130,11 +138,17 @@ def retrieve(conn, question, top_k=None, filters=None):
     return picked
 
 
+def is_unofficial(r):
+    return r["org_type"] in UNOFFICIAL
+
+
 def speech_treatment(r):
     """国会会議録の発言の扱いを返す。会議録でなければ None。
 
     党規約で党の決定に反する意見の表明を制限している党の議員の発言は党の方針に沿うものとして、
     それ以外 (定めがない党・未確認の党・無所属) は議員個人の非公式見解・参考意見として扱う。"""
+    if is_unofficial(r):
+        return "非公式の論評 (書き手個人の意見・解説。事実の根拠や組織の立場としては扱わない)"
     if r["org_type"] != "diet" or not r["affiliation"]:
         return None
     group = r["affiliation"]
@@ -169,6 +183,15 @@ PERSONAL_RULES = """【まとめ方の規則】
 5. 見出しは付けない。"""
 
 
+UNOFFICIAL_HEADING = "\n\n### 非公式の論評 (参考)\n\n"
+UNOFFICIAL_RULES = """【まとめ方の規則】
+1. 上の資料は個人の論評・解説 (note など) で、公的な発表でも組織の立場でもない。
+2. 【質問】に関係する論点だけを、書き手ごとに「〇〇 (資料の発行元) は〜と論じている [番号]」の形の箇条書きで簡潔に書く。
+3. 論評の中の事実や数値を、確認された事実として書かない。必要なら「〜としている」と書き手の主張として書く。
+4. 資料にないことを補わない。質問に関係する論評がなければ「該当する論評はない」とだけ書く。
+5. 見出しは付けない。"""
+
+
 def is_personal(r):
     """議員個人の発言 (党の立場として扱わない資料) か。"""
     return (speech_treatment(r) or "").startswith("議員個人の発言")
@@ -193,23 +216,30 @@ def prepare(question, history=None, filters=None):
     # 「それについて詳しく」のような続きの質問でも検索できるよう、直前の質問を足す
     previous = next((m["content"] for m in reversed(history or []) if m["role"] == "user"), "")
     conn = get_connection()
-    sources = retrieve(conn, f"{previous}\n{question}".strip(), filters=filters)
+    query = f"{previous}\n{question}".strip()
+    # 非公式の論評は別枠で探す。公式資料の枠を奪わず、回答でも別の節にする
+    sources = retrieve(conn, query, filters=filters)
+    sources += retrieve(conn, query, filters=filters, unofficial=True)
     conn.close()
     if not sources:
         return None, []
     numbered = list(enumerate(sources, 1))
-    main = [(n, r) for n, r in numbered if not is_personal(r)]
+    main = [(n, r) for n, r in numbered if not is_personal(r) and not is_unofficial(r)]
     personal = [(n, r) for n, r in numbered if is_personal(r)]
+    unofficial = [(n, r) for n, r in numbered if is_unofficial(r)]
 
     plan = []
     if main:
         plan.append(("", [{"role": "system", "content": SYSTEM}, *(history or []),
                           {"role": "user", "content": _prompt(main, RULES, question)}]))
     else:
-        plan.append(("党・会派の立場を示す資料 (党の文書など) は、収集した資料には見つかりませんでした。", None))
+        plan.append(("公式の資料 (行政・政党などの文書、国会の答弁) は、収集した資料には見つかりませんでした。", None))
     if personal:
         plan.append((PERSONAL_HEADING, [{"role": "system", "content": SYSTEM},
                                         {"role": "user", "content": _prompt(personal, PERSONAL_RULES, question)}]))
+    if unofficial:
+        plan.append((UNOFFICIAL_HEADING, [{"role": "system", "content": SYSTEM},
+                                          {"role": "user", "content": _prompt(unofficial, UNOFFICIAL_RULES, question)}]))
     return plan, sources
 
 

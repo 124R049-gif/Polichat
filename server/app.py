@@ -10,7 +10,7 @@ from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
-from config import AUTH, BASE_DIR
+from config import AUTH, RES_DIR
 from database.db import get_connection
 from llm.client import LLMError, chat_stream, endpoint
 from rag.answer import NOT_FOUND, ORG_LABELS, prepare, speech_treatment
@@ -19,7 +19,7 @@ from server import auth
 
 COOKIE = "session"
 HISTORY_MESSAGES = 6  # LLMに渡す過去のやりとり (質問と回答で3往復分)
-INDEX_HTML = BASE_DIR / "web" / "index.html"
+INDEX_HTML = RES_DIR / "web" / "index.html"
 
 app = FastAPI(title="日本社会政治監視機構", docs_url=None, redoc_url=None, openapi_url=None)
 throttle = auth.LoginThrottle(AUTH["login_lock_minutes"] * 60)

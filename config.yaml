@@ -53,7 +53,26 @@ rag:
   top_k: 8                # 回答に使うチャンク数
   max_chunks_per_document: 3  # うち同じ文書から採用する上限
   max_chunks_per_source: 2    # うち同じ機関 (国会は同じ会派・役職) から採用する上限 (枠が余れば緩める)
+  unofficial_top_k: 3     # 非公式の論評 (note など) から別枠で採用するチャンク数。公式資料の枠は減らさない
   tag_input_chars: 2500   # タグ付け時にLLMへ渡す本文の先頭文字数
+
+# Discord Bot (python main.py bot)。トークンは環境変数 DISCORD_BOT_TOKEN か .env に書く (ここには書かない)
+# 利用回数は Discord の利用者ごとに "discord:<ID>" として数え、上限は auth.daily_limit と同じ
+discord:
+  allowed_guild_ids: []     # 使えるサーバーのID。空ならBotを招待したすべてのサーバー
+  allow_dm: false           # DM での利用を許すか
+  max_concurrent: 1         # 同時に生成する回答の数 (共用GPUの負荷を抑える。超えた分は順番待ち)
+
+# 資料の定時更新 (scheduler.py)。serve / bot の起動中、または python main.py update --loop で動く
+# タグ付けは回答と同じ GPU を使うので、利用の少ない時刻にする。LLM に届かないときはタグ付け・埋め込みだけ次回に回す
+schedule:
+  times: ["05:00"]          # 毎日実行する時刻 (複数可。空 [] なら定時更新しない)
+  steps: [collect, extract, news, tag, embed]   # 実行する手順と順番
+
+# LLM サーバーへの SSH ポート転送を serve / bot と一緒に起動する (空なら起動しない。鍵認証が必要)
+tunnel:
+  command: ""               # 例: "ssh -J <踏み台> -L 11434:127.0.0.1:11434 -L 11435:127.0.0.1:11435 <LLMサーバー>"
+  wait_seconds: 20
 
 # ログインと利用回数の制限 (server/auth.py)
 auth:

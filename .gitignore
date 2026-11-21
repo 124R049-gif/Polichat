@@ -2,7 +2,10 @@ __pycache__/
 data/raw/
 data/*.db
 data/*.db-*
+data/*.log
 *.pyc
+build/
+dist/
 
 # 個人の作業記録・ツール設定 (公開しない)
 OLDLOG.txt

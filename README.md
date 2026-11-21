@@ -38,7 +38,46 @@ python main.py tag              # LLMでタグ付け (要 Ollama 接続)
 python main.py embed            # 埋め込み作成 (要 Ollama 接続)
 python main.py ask "質問"       # 資料に基づき出典付きで回答 (要 Ollama 接続)
 python main.py serve            # チャット画面を起動 → http://127.0.0.1:8000/
+python main.py update           # collect → extract → news → tag → embed をまとめて実行
 ```
+
+## 定時更新
+
+`config.yaml` の `schedule.times` (既定は毎日 05:00) に、資料の収集から埋め込みまでを自動で実行する。
+
+- `serve` / `bot` の起動中は、裏で自動的に動く (`times: []` にすると止まる)
+- それらを起動しないときは `python main.py update --loop` で待機させるか、Windows のタスクスケジューラに `python main.py update` を登録する
+- LLM に接続できないときはタグ付け・埋め込みだけ見送り、次回に回す。1つの手順が失敗しても残りは続ける
+- 同時に2つは実行しない (`data/update.lock`)。結果の要約は `data/update.log` に追記する
+- `python main.py update --step collect --step extract` のように手順を選んで実行もできる
+
+## Discord Bot として公開する
+
+Bot は Discord へ外向きに接続するだけなので、ポート開放・VPN・HTTPS の用意は要らない。
+
+1. [Discord Developer Portal](https://discord.com/developers/applications) でアプリを作り、Bot のトークンを発行する
+2. トークンを `.env` に書く (リポジトリには含まれない)
+   ```
+   DISCORD_BOT_TOKEN=発行したトークン
+   ```
+3. `python main.py bot` で起動し、表示される招待URLから Bot をサーバーに追加する
+4. Discord で `/ask 質問` と送ると、資料に基づく出典付きの回答が返る。`/status` で残り回数を確認できる
+
+- 利用回数は Discord の利用者ごとに数える (`user list` では `discord:<ID>` と表示)。上限変更・停止も `user limit` / `user disable` で行う
+- 使えるサーバーの限定、DM の可否、同時生成数は `config.yaml` の `discord` で設定する
+- `config.yaml` の `tunnel.command` に ssh のコマンドを書くと、LLM サーバーへのポート転送も一緒に起動する (鍵認証が必要)
+
+## exe にまとめる
+
+```
+pip install -r requirements.txt pyinstaller
+pyinstaller nihon-kanshi.spec      # → dist/nihon-kanshi.exe
+```
+
+- exe をダブルクリックすると Bot が起動する。他のコマンドは `nihon-kanshi.exe collect` のように使う
+- 初回起動時に `config.yaml`・`source/` を exe の隣に書き出す (以後は上書きしない。新しい exe で増えたファイルだけ追加する)。画面は exe に同梱したものを使う。資料の DB は exe の隣の `data/` に置く
+- exe を更新するときは exe だけ差し替える。`config.yaml` の新しい設定項目は README や同梱版を見て手で足す
+- `.env` も exe の隣に置く
 
 ## 利用者と利用回数
 

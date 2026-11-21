@@ -119,9 +119,12 @@ CREATE TABLE IF NOT EXISTS articles (
 
 def get_connection():
     PATHS["db"].parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(PATHS["db"])
+    # 定時更新が書き込み中でも回答・ログインが待って続けられるよう、ロック待ちを長めにする
+    conn = sqlite3.connect(PATHS["db"], timeout=60)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
+    # WAL: 書き込み中も読み出しを止めない (設定は DB ファイルに残る)
+    conn.execute("PRAGMA journal_mode = WAL")
     return conn
 
 

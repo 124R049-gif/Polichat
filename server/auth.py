@@ -56,6 +56,19 @@ def add_user(username, password, daily_limit=None):
     conn.close()
 
 
+def external_user(username):
+    """Bot などの外部サービス経由の利用者 (例 "discord:123") を返す。なければ作る。
+
+    パスワードのハッシュを持たないので、チャット画面にはログインできない。
+    回数の上限・停止は通常の利用者と同じく `python main.py user ...` で変えられる。"""
+    conn = get_connection()
+    conn.execute("INSERT OR IGNORE INTO users (username, password_hash) VALUES (?, '!')", (username,))
+    conn.commit()
+    user = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+    conn.close()
+    return user
+
+
 def update_user(username, **fields):
     """password / daily_limit / disabled を変更する。変更した利用者がいれば True。"""
     if "password" in fields:

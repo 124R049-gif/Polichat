@@ -8,8 +8,10 @@
   python main.py news               ニュース見出しを取得
   python main.py tag                未分類の文書にLLMでタグ付け
   python main.py embed              未処理のチャンクを埋め込み
+  python main.py update             収集〜埋め込みをまとめて実行 (--loop で定時実行)
   python main.py ask "質問"          資料に基づき出典付きで回答
   python main.py serve              チャット画面を起動 (http://127.0.0.1:8000/)
+  python main.py bot                Discord Bot を起動 (/ask で質問)
   python main.py user add 名前       利用者を登録 (パスワードは対話で入力)
   python main.py user list           利用者と本日の利用回数
   python main.py user limit 名前 --limit 50   1日の上限を変更 (passwd / disable / enable / delete もある)
@@ -92,13 +94,42 @@ def cmd_ask(args):
         print(format_source(n, r) + "\n    " + r["url"])
 
 
+def cmd_update(args):
+    import scheduler
+    if not args.loop:
+        if not scheduler.run_update(args.step):
+            sys.exit(1)
+        return
+    from llm import tunnel
+    tunnel.start()
+    if scheduler.next_run() is None:
+        sys.exit("config.yaml の schedule.times に時刻を書いてください")
+    print("定時更新を待機します (Ctrl+C で終了)")
+    scheduler.loop()
+
+
 def cmd_serve(args):
     import uvicorn
+    import scheduler
+    from llm import tunnel
+    from server.app import app
     init_db()
+    tunnel.start()
+    scheduler.start_background()
     print(f"チャット画面: http://{args.host}:{args.port}/  (Ctrl+C で終了)")
     if args.host != "127.0.0.1":
         print("注意: このPC以外からも接続できます。利用者の登録と、HTTPS での公開を確認してください")
-    uvicorn.run("server.app:app", host=args.host, port=args.port, log_level="warning")
+    uvicorn.run(app, host=args.host, port=args.port, log_level="warning")
+
+
+def cmd_bot(args):
+    import scheduler
+    from bot import discord_bot
+    from llm import tunnel
+    tunnel.start()
+    scheduler.start_background()
+    print("Discord Bot を起動します (Ctrl+C で終了)")
+    discord_bot.run()
 
 
 def _ask_password():
@@ -175,6 +206,12 @@ def main():
 
     sub.add_parser("embed", help="埋め込みを作成").set_defaults(func=cmd_embed)
 
+    p = sub.add_parser("update", help="収集〜埋め込みをまとめて実行 (--loop で定時実行)")
+    p.add_argument("--loop", action="store_true", help="config.yaml の schedule.times に繰り返し実行")
+    p.add_argument("--step", action="append", choices=["collect", "extract", "news", "tag", "embed"],
+                   help="この手順だけ実行 (複数指定可。既定は schedule.steps)")
+    p.set_defaults(func=cmd_update)
+
     p = sub.add_parser("ask", help="資料に基づいて質問に回答")
     p.add_argument("question", nargs="+")
     p.add_argument("-m", "--model", help="設定と別のモデルで試す")
@@ -186,13 +223,17 @@ def main():
     p.add_argument("-p", "--port", type=int, default=8000)
     p.set_defaults(func=cmd_serve)
 
+    sub.add_parser("bot", help="Discord Bot を起動").set_defaults(func=cmd_bot)
+
     p = sub.add_parser("user", help="利用者の管理")
     p.add_argument("action", choices=["add", "list", "passwd", "limit", "disable", "enable", "delete"])
     p.add_argument("name", nargs="?", help="利用者名")
     p.add_argument("--limit", type=int, help="1日の質問回数の上限 (add / limit。limit で 0 なら既定値に戻す)")
     p.set_defaults(func=cmd_user)
 
-    args = parser.parse_args()
+    # exe をダブルクリックしたとき (引数なし) は Bot を起動する
+    frozen = getattr(sys, "frozen", False)
+    args = parser.parse_args(sys.argv[1:] or (["bot"] if frozen else None))
     init_db()
     try:
         args.func(args)
@@ -204,4 +245,17 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if getattr(sys, "frozen", False) and len(sys.argv) == 1:
+        # ダブルクリックで起動したとき、エラーを読む前にウィンドウが閉じないようにする
+        try:
+            main()
+        except SystemExit as e:
+            if e.code:
+                print(e.code)
+                input("Enter キーで終了します")
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            input("Enter キーで終了します")
+    else:
+        main()

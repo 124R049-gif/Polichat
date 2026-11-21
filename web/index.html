@@ -83,6 +83,7 @@ main { flex: 1; overflow-y: auto; }
 .org { font-size: 11px; padding: 0 6px; border-radius: 4px; border: 1px solid currentColor; white-space: nowrap; }
 .org.government, .org.public { color: var(--government); } .org.party { color: var(--party); }
 .org.association, .org.local { color: var(--muted); }
+.org.commentary { color: var(--muted); border-style: dashed; } /* 非公式の論評 */
 .org.union { color: var(--union); } .org.business { color: var(--business); }
 .src .body { padding: 0 11px 10px; border-top: 1px dashed var(--line); }
 .src .excerpt { white-space: pre-wrap; color: var(--muted); margin: 8px 0; max-height: 220px; overflow-y: auto; }
@@ -228,7 +229,7 @@ function sourcesHtml(sources) {
         <span class="meta">${esc(s.source_name)} ・ ${esc(s.date || "日付不明")}</span>
       </summary>
       <div class="body">
-        ${s.treatment ? `<div class="meta">発言の扱い: ${esc(s.treatment)}</div>` : ""}
+        ${s.treatment ? `<div class="meta">${s.org_type === "commentary" ? "扱い" : "発言の扱い"}: ${esc(s.treatment)}</div>` : ""}
         <div class="excerpt">${esc(s.text)}</div>
         <a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.url)}</a>
       </div>

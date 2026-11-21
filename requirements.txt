@@ -6,3 +6,4 @@ pymupdf
 numpy
 fastapi
 uvicorn
+discord.py
