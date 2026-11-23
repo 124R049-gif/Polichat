@@ -1,0 +1,20 @@
+{
+    "_説明": "タイムラインの行 (主体)。sources は政党のWebサイトのソースID、match は国会会議録の会派名に含まれる文字列。並び順が画面の行の順になる。政府の行には、行政機関の発表と、大臣・政務官・官僚の答弁が入る",
+    "actors": [
+        {"id": "government", "label": "政府", "name": "政府 (内閣・省庁)"},
+        {"id": "jimin", "label": "自民", "name": "自由民主党", "sources": ["jimin"], "match": ["自由民主党"]},
+        {"id": "ishin", "label": "維新", "name": "日本維新の会", "sources": ["ishin"], "match": ["日本維新の会"]},
+        {"id": "cdp", "label": "立憲", "name": "立憲民主党", "sources": ["cdp"], "match": ["立憲民主"]},
+        {"id": "chudo", "label": "中道", "name": "中道", "match": ["中道"]},
+        {"id": "dpfp", "label": "国民", "name": "国民民主党", "sources": ["dpfp"], "match": ["国民民主"]},
+        {"id": "komei", "label": "公明", "name": "公明党", "sources": ["komei"], "match": ["公明党"]},
+        {"id": "sanseito", "label": "参政", "name": "参政党", "sources": ["sanseito"], "match": ["参政党"]},
+        {"id": "jcp", "label": "共産", "name": "日本共産党", "sources": ["jcp"], "match": ["日本共産党"]},
+        {"id": "reiwa", "label": "れいわ", "name": "れいわ新選組", "sources": ["reiwa"], "match": ["れいわ"]},
+        {"id": "mirai", "label": "みらい", "name": "チームみらい", "match": ["チームみらい"]},
+        {"id": "sdp", "label": "社民", "name": "社会民主党", "sources": ["sdp"], "match": ["社会民主党"]},
+        {"id": "hoshu", "label": "保守", "name": "日本保守党", "match": ["日本保守党"]},
+        {"id": "inochi", "label": "いのち", "name": "いのちの党", "match": ["いのちの党"]}
+    ],
+    "government_sources": ["kantei", "cao", "mhlw", "soumu", "meti", "digital", "mof", "mext", "mlit", "moj", "maff", "fsa", "caa", "npa", "env", "mod", "ppc"]
+}

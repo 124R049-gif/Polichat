@@ -1,6 +1,7 @@
 """API サーバー。チャット画面 (web/index.html) と、その裏の回答生成を提供する。
 
-画面以外の API はログインが必要。質問は利用者ごとに1日の回数を制限する (server/auth.py)。
+画面以外の API はログインが必要。質問は利用者ごとに1日の回数を制限する (core/accounts.py)。
+回答の生成そのものは core/answer_service.py (Bot と共通) が行い、ここは HTTP への受け渡しだけをする。
 """
 import json
 from datetime import date
@@ -11,18 +12,19 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from config import AUTH, RES_DIR
+from core import accounts as auth
+from core.answer_service import answer, service_status
 from database.db import get_connection
-from llm.client import LLMError, chat_stream, endpoint
-from rag.answer import NOT_FOUND, ORG_LABELS, prepare, speech_treatment
-
-from server import auth
+from rag.answer import ORG_LABELS, speech_treatment
+from server.throttle import LoginThrottle
+from timeline import view as timeline_view
 
 COOKIE = "session"
 HISTORY_MESSAGES = 6  # LLMに渡す過去のやりとり (質問と回答で3往復分)
 INDEX_HTML = RES_DIR / "web" / "index.html"
 
 app = FastAPI(title="日本社会政治監視機構", docs_url=None, redoc_url=None, openapi_url=None)
-throttle = auth.LoginThrottle(AUTH["login_lock_minutes"] * 60)
+throttle = LoginThrottle(AUTH["login_lock_minutes"] * 60)
 
 
 @app.middleware("http")
@@ -102,14 +104,7 @@ def me(user=Depends(current_user)):
 
 @app.get("/api/status")
 def status(user=Depends(current_user)):
-    _, model, device = endpoint("chat")
-    conn = get_connection()
-    documents = conn.execute(
-        "SELECT COUNT(*) FROM documents WHERE status = 'extracted'").fetchone()[0]
-    sources = conn.execute(
-        "SELECT COUNT(DISTINCT source_id) FROM documents WHERE status = 'extracted'").fetchone()[0]
-    conn.close()
-    return {"device": device, "model": model, "documents": documents, "sources": sources}
+    return service_status()
 
 
 @app.get("/api/options")
@@ -127,6 +122,28 @@ def options(user=Depends(current_user)):
             "fields": fields}
 
 
+@app.get("/api/timeline/options")
+def timeline_options(user=Depends(current_user)):
+    conn = get_connection()
+    try:
+        return timeline_view.options(conn)
+    finally:
+        conn.close()
+
+
+@app.get("/api/timeline")
+def timeline(user=Depends(current_user), fields: str = "", actors: str = "", personal: bool = False,
+             date_from: date | None = None, date_to: date | None = None):
+    """政府・各党の出来事と予定。fields / actors はカンマ区切り。期間は出来事の時期で絞る。"""
+    split = lambda s: [x for x in s.split(",") if x][:30]
+    conn = get_connection()
+    try:
+        return timeline_view.timeline(conn, split(fields), split(actors), personal,
+                                      date_from and date_from.isoformat(), date_to and date_to.isoformat())
+    finally:
+        conn.close()
+
+
 def _source_json(n, r):
     return {"n": n, "title": r["title"], "url": r["url"], "page": r["page"],
             "date": r["published_date"], "source_name": r["source_name"],
@@ -135,41 +152,18 @@ def _source_json(n, r):
 
 
 def _events(req: ChatRequest, user, day):
-    """1行1イベントのJSONを順に返す: sources → delta (複数) → done / error。
-    サーバー側の理由 (時間外・LLMの障害) で回答できなかったときは、その質問の回数を戻す。
-    利用者が中止した場合は、生成を始めているので戻さない。"""
-    def event(**data):
-        return json.dumps(data, ensure_ascii=False) + "\n"
-
-    try:
-        if endpoint("chat")[2] == "cpu":
-            # CPU では1問に30分以上かかり終わらないため、受け付けない
-            auth.refund(user["id"], day)
-            yield event(type="error", message="現在は共用サーバーのGPUを使えない時間帯のため、"
-                        "回答を生成できません (利用できるのは 21時〜翌9時と日曜)。")
-            return
-        history = [m.model_dump() for m in req.history[-HISTORY_MESSAGES:]]
-        plan, sources = prepare(req.question, history, req.filters.model_dump(mode="json"))
-        yield event(type="sources", sources=[_source_json(n, r) for n, r in enumerate(sources, 1)])
-        if plan is None:
-            yield event(type="delta", text=NOT_FOUND)
-        else:
-            # 本体と「議員個人の発言」を順に生成してつなげる
-            for prefix, messages in plan:
-                if prefix:
-                    yield event(type="delta", text=prefix)
-                for text in chat_stream("chat", messages) if messages else ():
-                    yield event(type="delta", text=text)
-        yield event(type="done", remaining=max(auth.daily_limit(user) - auth.used_today(user["id"]), 0))
-    except LLMError as e:
-        auth.refund(user["id"], day)
-        yield event(type="error", message=f"{e} (この質問は回数に数えません)")
+    """1行1イベントのJSONを順に返す: (queued) → sources → delta (複数) → done / error。
+    回数の精算は answer() が行う (サーバー側の失敗は戻し、利用者の中止は戻さない)。"""
+    history = [m.model_dump() for m in req.history[-HISTORY_MESSAGES:]]
+    for ev in answer(user, req.question, history, req.filters.model_dump(mode="json"), day):
+        if ev["type"] == "sources":
+            ev = {"type": "sources", "sources": [_source_json(n, r) for n, r in enumerate(ev["sources"], 1)]}
+        yield json.dumps(ev, ensure_ascii=False) + "\n"
 
 
 @app.post("/api/chat")
 def chat(req: ChatRequest, user=Depends(current_user)):
     day = auth.today()
     if not auth.consume(user):
-        raise HTTPException(429, f"本日の質問回数の上限 ({auth.daily_limit(user)} 回) に達しました。"
-                                 "明日になると再び使えます。")
+        raise HTTPException(429, auth.limit_message(user))
     return StreamingResponse(_events(req, user, day), media_type="application/x-ndjson")

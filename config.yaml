@@ -48,6 +48,9 @@ llm:
     model: "embeddinggemma:latest"
   num_ctx: 12288
   timeout_seconds: 900
+  # 同時に生成する回答の数。Web 画面と各 Bot の合計 (別プロセスでもこのPC内でまとめて数える)。
+  # 共用GPUの負荷を抑えるため。超えた分は順番待ち
+  max_concurrent: 1
 
 rag:
   top_k: 8                # 回答に使うチャンク数
@@ -56,25 +59,51 @@ rag:
   unofficial_top_k: 3     # 非公式の論評 (note など) から別枠で採用するチャンク数。公式資料の枠は減らさない
   tag_input_chars: 2500   # タグ付け時にLLMへ渡す本文の先頭文字数
 
+# タイムライン (政府・各党の出来事と予定)。python main.py events で資料から LLM で取り出す (timeline/events.py)
+timeline:
+  max_per_run: 300          # 1回に LLM に渡す資料の数 (新しい資料から順に。会議録の発言は行動・予定の語を含むものだけ)
+  input_chars: 4000         # LLM に渡す本文の先頭文字数
+  max_events_per_document: 5
+
 # Discord Bot (python main.py bot)。トークンは環境変数 DISCORD_BOT_TOKEN か .env に書く (ここには書かない)
 # 利用回数は Discord の利用者ごとに "discord:<ID>" として数え、上限は auth.daily_limit と同じ
 discord:
   allowed_guild_ids: []     # 使えるサーバーのID。空ならBotを招待したすべてのサーバー
   allow_dm: false           # DM での利用を許すか
-  max_concurrent: 1         # 同時に生成する回答の数 (共用GPUの負荷を抑える。超えた分は順番待ち)
+  # 返信先の投稿の URL を読むか (@Bot を付けて URL の投稿に返信したとき)。Developer Portal で
+  # Message Content Intent を有効にしてから true にする。メンション・右クリックメニュー・/explain はこれなしで動く
+  message_content_intent: false
+  # 同時に生成する回答の数は llm.max_concurrent (Web 画面と共通)
+
+# Bot に貼られた URL (記事・X の投稿・YouTube) を読んで解説する (core/url_reader.py)
+# 利用者が求めた1件をその場で読むだけで、本文は保存しない。内部ネットワークの URL は読まない
+url_reader:
+  timeout_seconds: 20
+  max_bytes: 10485760       # 1件の上限 (10MB)
+  max_chars: 6000           # LLM に渡す本文の上限文字数 (llm.num_ctx に収まるように)
+  user_agent: "Mozilla/5.0 (compatible; KanshiLinkReader/1.0)"
+
+# Slack Bot (python main.py slack)。トークンは環境変数か .env に SLACK_BOT_TOKEN (xoxb-) と
+# SLACK_APP_TOKEN (xapp-) を書く (ここには書かない)。利用回数は "slack:<ワークスペースID>:<利用者ID>" として数える
+slack:
+  allowed_team_ids: []      # 使えるワークスペースのID (T で始まる)。空ならアプリを入れたすべてのワークスペース
+  allowed_channel_ids: []   # 使えるチャンネルのID (C / G で始まる)。空ならBotを追加したすべてのチャンネル
+  allow_dm: false           # Bot との DM での利用を許すか
+  slash_ask: false          # /ask コマンドも受け付けるか (標準はメンションと DM だけ。true なら Slack 側にも /ask を登録)
+  edit_interval: 2.0        # 生成中に投稿を書き換える間隔 (秒)。Slack の速度制限のため 1.5 未満にはならない
 
 # 資料の定時更新 (scheduler.py)。serve / bot の起動中、または python main.py update --loop で動く
 # タグ付けは回答と同じ GPU を使うので、利用の少ない時刻にする。LLM に届かないときはタグ付け・埋め込みだけ次回に回す
 schedule:
   times: ["05:00"]          # 毎日実行する時刻 (複数可。空 [] なら定時更新しない)
-  steps: [collect, extract, news, tag, embed]   # 実行する手順と順番
+  steps: [collect, extract, news, tag, events, embed]   # 実行する手順と順番
 
 # LLM サーバーへの SSH ポート転送を serve / bot と一緒に起動する (空なら起動しない。鍵認証が必要)
 tunnel:
   command: ""               # 例: "ssh -J <踏み台> -L 11434:127.0.0.1:11434 -L 11435:127.0.0.1:11435 <LLMサーバー>"
   wait_seconds: 20
 
-# ログインと利用回数の制限 (server/auth.py)
+# ログインと利用回数の制限 (core/accounts.py。Web 画面と Bot で共通)
 auth:
   daily_limit: 20           # 1人1日あたりの質問回数 (利用者ごとに user limit で変更可)
   session_days: 30          # ログインの有効日数

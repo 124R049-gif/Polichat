@@ -4,6 +4,7 @@ config.yaml の tunnel.command に ssh のコマンドを書いたときだけ�
 パスワードを聞かれると止まってしまうので、鍵認証 (ssh-agent や ~/.ssh/config) を設定しておく。
 """
 import atexit
+import os
 import shlex
 import socket
 import subprocess
@@ -31,9 +32,11 @@ def start():
     if _port_open(url):
         print(f"ポート転送は既に有効です ({url})")
         return
-    args = command if isinstance(command, list) else shlex.split(command, posix=False)
-    # -N: コマンドを実行しない / ExitOnForwardFailure: 転送できなければすぐ終わる
-    args = [args[0], "-N", "-o", "ExitOnForwardFailure=yes", "-o", "ServerAliveInterval=30", *args[1:]]
+    args = command if isinstance(command, list) else shlex.split(command, posix=os.name != "nt")
+    # -N: コマンドを実行しない / ExitOnForwardFailure: 転送できなければすぐ終わる /
+    # BatchMode: パスワードや確認を聞かれる設定なら止まらずに失敗する (Docker など入力できない環境のため)
+    args = [args[0], "-N", "-o", "ExitOnForwardFailure=yes", "-o", "ServerAliveInterval=30",
+            "-o", "BatchMode=yes", *args[1:]]
     proc = subprocess.Popen(args, stdin=subprocess.DEVNULL)
     atexit.register(proc.terminate)
     deadline = time.monotonic() + TUNNEL.get("wait_seconds", 20)

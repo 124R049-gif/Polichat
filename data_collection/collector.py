@@ -81,8 +81,8 @@ def _save(conn, fetcher, source, url, title, date, parent_id=None):
     return doc_id, (record["file_type"] if ok else None), body
 
 
-def collect(source_ids=None, limit=None):
-    """台帳のソースを巡回して新しい文書を取得する。"""
+def collect(source_ids=None, limit=None, since=None, until=None):
+    """台帳のソースを巡回して新しい文書を取得する。since / until は国会会議録の取得期間 (過去分を遡るとき)。"""
     limit = limit or CRAWL["max_new_per_source"]
     conn = get_connection()
     fetcher = Fetcher()
@@ -94,7 +94,7 @@ def collect(source_ids=None, limit=None):
         print(f"== {source['name']}")
         if source.get("type") == "kokkai":
             try:
-                collect_kokkai(conn, fetcher, source, limit)
+                collect_kokkai(conn, fetcher, source, limit, since, until)
             except FetchError as e:
                 print(f"  会議一覧の取得に失敗: {e}")
             conn.execute("UPDATE sources SET last_scan = CURRENT_TIMESTAMP WHERE id = ?",

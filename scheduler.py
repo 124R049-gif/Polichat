@@ -1,4 +1,4 @@
-"""資料の更新 (収集 → 本文抽出 → ニュース見出し → タグ付け → 埋め込み) をまとめて、または定時に実行する。
+"""資料の更新 (収集 → 本文抽出 → ニュース見出し → タグ付け → タイムラインの出来事 → 埋め込み) をまとめて、または定時に実行する。
 
   python main.py update          1回だけ実行
   python main.py update --loop   config.yaml の schedule.times の時刻に繰り返し実行 (Ctrl+C で終了)
@@ -18,7 +18,7 @@ from config import PATHS, SCHEDULE
 LOCK = PATHS["db"].parent / "update.lock"
 LOG = PATHS["db"].parent / "update.log"
 STALE_HOURS = 12   # これより古いロックは異常終了の残骸とみなす
-ALL_STEPS = ["collect", "extract", "news", "tag", "embed"]
+ALL_STEPS = ["collect", "extract", "news", "tag", "events", "embed"]
 
 
 def _log(message):
@@ -62,6 +62,10 @@ def _step(name):
     if name == "tag":
         from parsing.tagger import tag_pending
         return f"{tag_pending()} 件"
+    if name == "events":
+        from timeline.events import extract_pending
+        scanned, saved = extract_pending()
+        return f"{scanned} 組から {saved} 件"
     if name == "embed":
         from rag.vector_db import embed_pending
         return f"{embed_pending()} チャンク"

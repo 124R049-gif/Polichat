@@ -1,0 +1,10 @@
+.git
+.claude
+.env
+data/
+dist/
+build/
+**/__pycache__
+*.pyc
+OLDLOG.txt
+*.local.yaml

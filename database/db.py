@@ -6,7 +6,8 @@ chunks    検索とRAG用に分割した本文。ページ番号を持つ
 tags      固定の分類表 (分野・種類)。document_tags で文書に付与
 embeddings チャンクの埋め込みベクトル (float32)
 articles  ニュース見出し (一次資料ではない。話題の検知用)
-users / sessions / usage  利用者、ログイン、1日ごとの質問回数 (server/auth.py)
+users / sessions / usage  利用者、ログイン、1日ごとの質問回数 (core/accounts.py)
+events / event_scans  タイムラインの出来事・予定と、抽出済みの文書 (timeline/events.py)
 """
 import json
 import sqlite3
@@ -103,6 +104,33 @@ CREATE TABLE IF NOT EXISTS usage (
     day     TEXT NOT NULL,          -- YYYY-MM-DD (サーバーの現地日付)
     count   INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (user_id, day)
+);
+
+-- タイムラインの出来事・予定。1件は1つの文書から LLM で取り出し、原文の一節 (quote) で根拠を確かめたもの
+CREATE TABLE IF NOT EXISTS events (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    document_id INTEGER NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
+    chunk_id    INTEGER REFERENCES chunks(id) ON DELETE SET NULL,  -- quote を含むチャンク
+    actor       TEXT NOT NULL,      -- source/actors.json の id (government / jimin など)
+    personal    INTEGER NOT NULL DEFAULT 0,  -- 議員個人の発言から取り出したもの (党の立場としては扱わない)
+    status      TEXT NOT NULL,      -- done (実施済み) / ongoing (進行中) / planned (予定・目標)
+    kind        TEXT NOT NULL,
+    field       TEXT,               -- 分野 (taxonomy.json)
+    title       TEXT NOT NULL,
+    summary     TEXT,
+    start_date  TEXT,               -- YYYY-MM-DD / YYYY-MM / YYYY。予定で時期が書かれていなければ NULL
+    end_date    TEXT,
+    quote       TEXT NOT NULL,
+    model       TEXT,
+    created_at  TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_events_actor ON events(actor, start_date);
+CREATE INDEX IF NOT EXISTS idx_events_document ON events(document_id);
+CREATE TABLE IF NOT EXISTS event_scans (
+    document_id INTEGER PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
+    n_events    INTEGER NOT NULL,
+    model       TEXT,
+    scanned_at  TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS articles (

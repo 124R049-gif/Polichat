@@ -1,0 +1,38 @@
+# Discord Bot を Docker で動かす (大学のサーバーや Raspberry Pi)。
+#   docker compose up -d --build     起動 (再起動しても自動で立ち上がる)
+#   docker compose logs -f           ログ
+#   docker compose run --rm discord-bot python main.py user list    コマンドを実行
+#
+# 用意するもの (このファイルと同じフォルダ)
+#   .env      DISCORD_BOT_TOKEN=... と、必要なら下の LLM_*_URL / TUNNEL_COMMAND
+#   data/     資料の DB (crawler.db)。手元の PC からコピーするか、起動後に python main.py update で集める
+#
+# 注意: 同じ data/crawler.db を2か所 (手元の PC と このサーバーなど) で同時に動かさない
+services:
+  discord-bot:
+    build:
+      context: .
+      args:
+        UID: ${UID:-1000}
+    image: nihon-kanshi
+    command: ["python", "main.py", "bot"]
+    restart: unless-stopped
+    # .env の値はすべてコンテナの環境変数になる。LLM (Ollama) の接続先は次のどちらかを .env に書く
+    #   GPU サーバーへ直接届く:   LLM_GPU_URL=http://<GPUサーバー>:11434  LLM_CPU_URL=...:11435  LLM_EMBED_URL=...:11435
+    #   SSH の転送をコンテナ内で張る: TUNNEL_COMMAND=ssh -L 11434:127.0.0.1:11434 -L 11435:127.0.0.1:11435 <LLMサーバー>
+    # どちらも書かなければ config.yaml の値 (コンテナ自身の localhost:11434 / 11435) になり、つながらない
+    env_file: .env
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - ./data:/app/data
+      - ./config.yaml:/app/config.yaml:ro
+      # SSH の転送を使うとき: 鍵と ~/.ssh/config を読み取り専用で渡す (鍵のパーミッションは 600)
+      # - ~/.ssh:/home/app/.ssh:ro
+    # Raspberry Pi などメモリが少ない機械向けの上限 (LLM は別のサーバーなので Bot 自体は軽い)
+    mem_limit: 1g
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

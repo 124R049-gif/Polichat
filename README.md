@@ -38,8 +38,26 @@ python main.py tag              # LLMでタグ付け (要 Ollama 接続)
 python main.py embed            # 埋め込み作成 (要 Ollama 接続)
 python main.py ask "質問"       # 資料に基づき出典付きで回答 (要 Ollama 接続)
 python main.py serve            # チャット画面を起動 → http://127.0.0.1:8000/
-python main.py update           # collect → extract → news → tag → embed をまとめて実行
+python main.py events           # タイムライン用に、資料から政府・各党の出来事と予定を取り出す (要 Ollama 接続。--redo でやり直し)
+python main.py update           # collect → extract → news → tag → events → embed をまとめて実行
+python main.py collect -s kokkai --since 2026-01-01 -n 1000   # 国会会議録を遡って取る (1会議2秒。1年分で約1時間)
 ```
+
+## タイムライン
+
+画面上部の「タイムライン」で、政府と各党が **これまで何をしてきたか・今何をしているか・これから何をしようとしているか** を
+同じ時間軸で見られる。行が政府と各党、横軸が時間で、赤い「今日」の線の左が実績、右が予定・目標。
+
+- ● 実施済み / ◐ 進行中 / ○ 予定・目標。期間のあるもの (審議中・計画期間など) は帯、予定の帯は点線
+- 時期の書かれていない予定は右端の「時期未定の予定」に並ぶ。予定の時期を過ぎたものは点線の下線で示す (実施されたかは未確認)
+- 分野で絞り込むと、同じテーマについて政府と各党の動きを並べて比べられる。行は表示する主体のボタンで出し入れできる
+- 項目を押すと、根拠の原文の一節と出典 URL を表示する。「この件をチャットで質問する」でチャットに質問を用意する
+- 幅の狭い画面 (スマホ) では、月ごとの一覧に切り替わる
+- 出来事は `python main.py events` (定時更新にも含む) で、資料から LLM が取り出す。主体は資料の発行元で決め、
+  LLM が抜き出した原文の一節が本文にないものは捨てる
+- 国会会議録の議員発言のうち、党規約で意見表明を制限していない党のものは「議員個人の発言」とし、既定では表示しない
+  (「議員個人の発言も表示」で出せる)
+- 主体の一覧と、会議録の会派名との対応は `source/actors.json`で変える
 
 ## 定時更新
 
@@ -63,9 +81,105 @@ Bot は Discord へ外向きに接続するだけなので、ポート開放・V
 3. `python main.py bot` で起動し、表示される招待URLから Bot をサーバーに追加する
 4. Discord で `/ask 質問` と送ると、資料に基づく出典付きの回答が返る。`/status` で残り回数を確認できる
 
+### URL の解説
+
+記事・X の投稿・YouTube の URL を渡すと、要点、誰が何を言っているか、収集した一次資料との照らし合わせを出典付きで返す。
+
+- `@Bot名 URL` (質問を添えるなら `@Bot名 URL 質問`)。メンションした投稿に返信する。URL のない `@Bot名 質問` は `/ask` と同じ
+- 投稿を右クリック → アプリ → **URL を解説** (他の人が貼った URL にも使える)
+- `/explain URL [質問]`
+- 読めるもの: 一般の記事 (Yahoo!ニュース・毎日・読売・日経などの無料部分。会員限定記事は読める部分だけと明記する)、PDF、
+  X の個別の投稿 (本文のみ)、YouTube (字幕があれば字幕、なければ題名と概要欄。`yt-dlp` が要る)
+- 利用者が求めた1件をその場で読むだけで、本文は保存しない (robots.txt は見ない)。内部ネットワークのアドレスや標準以外のポートは読まない
+- 解説も1回と数える。URL を読めなかったときは数えない
+- URL を貼った投稿に **返信して** `@Bot名` と送ったときに返信先の URL を読むには、Developer Portal の Bot 設定で
+  **Message Content Intent** を有効にし、`config.yaml` の `discord.message_content_intent` を `true` にする (他の使い方には不要)
+
 - 利用回数は Discord の利用者ごとに数える (`user list` では `discord:<ID>` と表示)。上限変更・停止も `user limit` / `user disable` で行う
 - 使えるサーバーの限定、DM の可否、同時生成数は `config.yaml` の `discord` で設定する
 - `config.yaml` の `tunnel.command` に ssh のコマンドを書くと、LLM サーバーへのポート転送も一緒に起動する (鍵認証が必要)
+
+### Docker で動かす (大学のサーバー・Raspberry Pi)
+
+Bot 自体は軽く、LLM は学科の GPU サーバーの Ollama を使うので、性能の低い機械でよい。
+Raspberry Pi は **64bit の OS** (arm64) にする (32bit では PyMuPDF が入らない)。
+
+1. このフォルダ (`data/` 以外) をサーバーに置き、同じ場所に `.env` を作る
+   ```
+   DISCORD_BOT_TOKEN=発行したトークン
+   # LLM へ直接届くなら
+   LLM_GPU_URL=http://<GPUサーバー>:11434
+   LLM_CPU_URL=http://<GPUサーバー>:11435
+   LLM_EMBED_URL=http://<GPUサーバー>:11435
+   # 届かないなら代わりに SSH の転送をコンテナ内で張る (compose.yaml の ~/.ssh の行を有効にする)
+   # TUNNEL_COMMAND=ssh -L 11434:127.0.0.1:11434 -L 11435:127.0.0.1:11435 <LLMサーバー>
+   ```
+2. 資料の DB を `data/crawler.db` にコピーする (または起動後に `docker compose run --rm discord-bot python main.py update`)
+3. `docker compose up -d --build` で起動。`docker compose logs -f` で招待 URL とログを見る
+
+- 毎日 05:00 (日本時間) の定時更新もコンテナの中で動く。**同じ DB を手元の PC と同時に動かさない**
+- `config.yaml` はコンテナに読み取り専用で渡しているので、変えたら `docker compose restart`
+- ホストの利用者の UID が 1000 でなければ `UID=$(id -u) docker compose up -d --build` で作る (`data/` に書けるように)
+- YouTube 側の変更で字幕が読めなくなったら、`docker compose build --no-cache` で `yt-dlp` を新しくする
+
+## Slack Bot として使う
+
+Socket Mode で Slack へ外向きに接続するだけなので、公開 URL・ポート開放・HTTPS の用意は要らない。
+質問の受け方は **@メンションと DM だけ** (意図しない回答を避けるため。`/ask` は既定で無効)。
+
+1. [Slack API](https://api.slack.com/apps) で **Create New App → From an app manifest** を選び、ワークスペースを選んで次を貼る
+   ```yaml
+   display_information:
+     name: 監視機構
+   features:
+     app_home:
+       messages_tab_enabled: true              # DM を使うとき
+       messages_tab_read_only_enabled: false
+     bot_user:
+       display_name: 監視機構
+       always_online: true
+     slash_commands:
+       - command: /status
+         description: モデル・資料数・本日の残り回数
+         should_escape: false
+   oauth_config:
+     scopes:
+       bot:
+         - app_mentions:read    # メンションを受け取る
+         - chat:write           # 回答の投稿と書き換え
+         - commands             # /status
+         - channels:history     # 公開チャンネルのスレッドで、続きの質問の前のやりとりを読む
+         - groups:history       # 同じく非公開チャンネル
+         - im:history           # DM を受け取る・読む
+   settings:
+     event_subscriptions:
+       bot_events:
+         - app_mention
+         - message.im
+     interactivity:
+       is_enabled: false
+     socket_mode_enabled: true
+   ```
+   手で作る場合も同じ: **Socket Mode** を有効にし、**Event Subscriptions** で bot events に `app_mention` と `message.im`、
+   **OAuth & Permissions** で上の scope、**Slash Commands** に `/status` (Socket Mode なので Request URL は不要)、
+   DM を使うなら **App Home** の Messages Tab と「Allow users to send … messages from the messages tab」を有効にする
+2. **Basic Information → App-Level Tokens** で scope `connections:write` のトークンを作る (`xapp-` で始まる)
+3. **Install App** でワークスペースに入れ、**Bot User OAuth Token** (`xoxb-` で始まる) を控える
+4. 2つのトークンを `.env` に書く (リポジトリにも `config.yaml` にも書かない)
+   ```
+   SLACK_BOT_TOKEN=xoxb-...
+   SLACK_APP_TOKEN=xapp-...
+   ```
+5. `python main.py slack` で起動し、使うチャンネルで `/invite @監視機構` と Bot を追加する
+6. `@監視機構 介護報酬の改定で何が変わったか` と投稿すると、その投稿のスレッドに回答が返る (生成中は書き換えで表示)。
+   回答の下に番号付きの出典と本日の残り回数が付く。続きの質問は同じスレッドで再び `@監視機構 …` と書く
+   (スレッド内のやりとりを踏まえて答える。メンションのない返信には反応しない)。`/status` は本人にだけ表示される
+
+- 利用回数は Slack の利用者ごとに数える (`user list` では `slack:<ワークスペースID>:<利用者ID>` と表示)。上限変更・停止は `user limit` / `user disable`
+- 断るとき (上限・停止中・使えない場所・生成中の連投) は本人にだけ見える返事 (ephemeral) にし、回数は使わない
+- 使えるワークスペース・チャンネルの限定、DM の可否 (既定は不可)、`/ask` の有効化は `config.yaml` の `slack` で設定する。
+  `slash_ask: true` にするときは Slack 側にも `/ask` を登録し、DM で使うなら scope `im:write` も足す
+- 同時生成数は `llm.max_concurrent` (Web・Discord と合計)。超えた分は「順番待ちです」と表示して待つ
 
 ## exe にまとめる
 

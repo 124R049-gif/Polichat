@@ -36,8 +36,18 @@ LLM = _cfg["llm"]
 RAG = _cfg["rag"]
 AUTH = _cfg["auth"]
 DISCORD = _cfg.get("discord", {})
+SLACK = _cfg.get("slack") or {}
 TUNNEL = _cfg.get("tunnel", {})
 SCHEDULE = _cfg.get("schedule") or {}
+URL_READER = _cfg.get("url_reader") or {}
+TIMELINE = {"max_per_run": 300, "input_chars": 4000, "max_events_per_document": 5} | (_cfg.get("timeline") or {})
+
+# Docker などで LLM の接続先だけ変えたいとき、config.yaml を書き換えずに環境変数で上書きする
+for _key, _env in (("gpu", "LLM_GPU_URL"), ("cpu", "LLM_CPU_URL"), ("embed", "LLM_EMBED_URL")):
+    if os.environ.get(_env):
+        LLM[_key]["url"] = os.environ[_env].rstrip("/")
+if os.environ.get("TUNNEL_COMMAND"):
+    TUNNEL["command"] = os.environ["TUNNEL_COMMAND"]
 
 
 def secret(name):

@@ -2,29 +2,33 @@
 
   python main.py collect            全ソースから新着文書を取得
   python main.py collect -s mhlw    特定ソースのみ
+  python main.py collect -s kokkai --since 2026-01-01 -n 300   国会会議録を遡って取る
   python main.py extract            未処理の文書から本文を抽出
   python main.py status             収集状況を表示
   python main.py search 介護 報酬    本文を検索
   python main.py news               ニュース見出しを取得
   python main.py tag                未分類の文書にLLMでタグ付け
   python main.py embed              未処理のチャンクを埋め込み
+  python main.py events             資料からタイムラインの出来事・予定を取り出す (LLM)
   python main.py update             収集〜埋め込みをまとめて実行 (--loop で定時実行)
   python main.py ask "質問"          資料に基づき出典付きで回答
   python main.py serve              チャット画面を起動 (http://127.0.0.1:8000/)
   python main.py bot                Discord Bot を起動 (/ask で質問)
+  python main.py slack              Slack Bot を起動 (/ask・メンション・DM で質問)
   python main.py user add 名前       利用者を登録 (パスワードは対話で入力)
   python main.py user list           利用者と本日の利用回数
   python main.py user limit 名前 --limit 50   1日の上限を変更 (passwd / disable / enable / delete もある)
 """
 import argparse
 import sys
+from datetime import date
 
 from database.db import get_connection, init_db, search_chunks
 
 
 def cmd_collect(args):
     from data_collection.collector import collect
-    collect(source_ids=args.source, limit=args.limit)
+    collect(source_ids=args.source, limit=args.limit, since=args.since, until=args.until)
 
 
 def cmd_extract(args):
@@ -83,6 +87,12 @@ def cmd_embed(args):
     print(f"埋め込み完了: {embed_pending()} チャンク")
 
 
+def cmd_events(args):
+    from timeline.events import extract_pending
+    scanned, saved = extract_pending(args.limit, redo=args.redo)
+    print(f"タイムライン: {scanned} 組の資料から {saved} 件を取り出しました")
+
+
 def cmd_ask(args):
     from llm.client import endpoint
     from rag.answer import ask, format_source
@@ -132,9 +142,20 @@ def cmd_bot(args):
     discord_bot.run()
 
 
+def cmd_slack(args):
+    import scheduler
+    from bot import slack_bot
+    from llm import tunnel
+    slack_bot.tokens()   # トークンがなければ、トンネルなどを起動する前に止める
+    tunnel.start()
+    scheduler.start_background()
+    print("Slack Bot を起動します (Ctrl+C で終了)")
+    slack_bot.run()
+
+
 def _ask_password():
     from getpass import getpass
-    from server.auth import validate_password
+    from core.accounts import validate_password
     while True:
         password = getpass("パスワード: ")
         if problem := validate_password(password):
@@ -147,7 +168,7 @@ def _ask_password():
 
 def cmd_user(args):
     import sqlite3
-    from server import auth
+    from core import accounts as auth
     init_db()
     if args.action == "list":
         users = auth.list_users()
@@ -188,6 +209,9 @@ def main():
     p = sub.add_parser("collect", help="新着文書を取得")
     p.add_argument("-s", "--source", action="append", help="ソースID (複数指定可)")
     p.add_argument("-n", "--limit", type=int, help="1ソースあたりの新規取得数")
+    p.add_argument("--since", type=date.fromisoformat, metavar="YYYY-MM-DD",
+                   help="国会会議録をこの日まで遡って取る (-s kokkai -n 200 などと一緒に。新しい会議から順に取る)")
+    p.add_argument("--until", type=date.fromisoformat, metavar="YYYY-MM-DD", help="国会会議録をこの日の分まで取る")
     p.set_defaults(func=cmd_collect)
 
     sub.add_parser("extract", help="本文を抽出").set_defaults(func=cmd_extract)
@@ -206,9 +230,14 @@ def main():
 
     sub.add_parser("embed", help="埋め込みを作成").set_defaults(func=cmd_embed)
 
+    p = sub.add_parser("events", help="タイムラインの出来事・予定を取り出す (LLM)")
+    p.add_argument("-n", "--limit", type=int, help="LLM に渡す資料の組の数 (既定は timeline.max_per_run)")
+    p.add_argument("--redo", action="store_true", help="取り出し済みの出来事を消して最初からやり直す (取り出し方を変えたとき)")
+    p.set_defaults(func=cmd_events)
+
     p = sub.add_parser("update", help="収集〜埋め込みをまとめて実行 (--loop で定時実行)")
     p.add_argument("--loop", action="store_true", help="config.yaml の schedule.times に繰り返し実行")
-    p.add_argument("--step", action="append", choices=["collect", "extract", "news", "tag", "embed"],
+    p.add_argument("--step", action="append", choices=["collect", "extract", "news", "tag", "events", "embed"],
                    help="この手順だけ実行 (複数指定可。既定は schedule.steps)")
     p.set_defaults(func=cmd_update)
 
@@ -224,6 +253,7 @@ def main():
     p.set_defaults(func=cmd_serve)
 
     sub.add_parser("bot", help="Discord Bot を起動").set_defaults(func=cmd_bot)
+    sub.add_parser("slack", help="Slack Bot を起動").set_defaults(func=cmd_slack)
 
     p = sub.add_parser("user", help="利用者の管理")
     p.add_argument("action", choices=["add", "list", "passwd", "limit", "disable", "enable", "delete"])

@@ -31,12 +31,12 @@ def _get_json(fetcher, endpoint, **params):
     return json.loads(body)
 
 
-def list_meetings(fetcher, since):
-    """since 以降の会議 [(issueID, 開催日)] を返す。"""
+def list_meetings(fetcher, since, until=None):
+    """since 以降 (until があればその日まで) の会議 [(issueID, 開催日)] を返す。"""
     meetings, start = [], 1
+    period = {"from": since.isoformat()} | ({"until": until.isoformat()} if until else {})
     while start:
-        page = _get_json(fetcher, "meeting_list", **{
-            "from": since.isoformat(), "maximumRecords": 100, "startRecord": start})
+        page = _get_json(fetcher, "meeting_list", **period, maximumRecords=100, startRecord=start)
         meetings += [(m["issueID"], m["date"]) for m in page.get("meetingRecord", [])]
         start = page.get("nextRecordPosition")
     return meetings
@@ -89,14 +89,17 @@ def _save_meeting(conn, source, meeting, raw):
     return len(speeches)
 
 
-def collect_kokkai(conn, fetcher, source, limit):
-    """直近 source["days"] 日の会議録のうち、未取得の会議を最大 limit 件取得する。"""
-    since = date.today() - timedelta(days=source.get("days", 45))
-    meetings = list_meetings(fetcher, since)
+def collect_kokkai(conn, fetcher, source, limit, since=None, until=None):
+    """直近 source["days"] 日 (since を渡せばその日以降) の会議録のうち、未取得の会議を新しい順に最大 limit 件取得する。
+
+    過去分を遡るときは since を古い日付にして何回かに分けて実行する (1会議ごとに2秒待つので、1年分で1時間ほど)。
+    until を渡すと、その日までの会議だけにする。"""
+    since = since or date.today() - timedelta(days=source.get("days", 45))
+    meetings = list_meetings(fetcher, since, until)
     known = {r["url"] for r in conn.execute(
         "SELECT url FROM documents WHERE source_id = ? AND file_type = 'meeting'", (source["id"],))}
     new = [m for m in meetings if f"https://kokkai.ndl.go.jp/txt/{m[0]}" not in known]
-    print(f"  会議 {len(meetings)} 件 / 未取得 {len(new)} 件 ({since} 以降)")
+    print(f"  会議 {len(meetings)} 件 / 未取得 {len(new)} 件 ({since} 以降{f'、{until} まで' if until else ''})")
     for issue_id, _ in sorted(new, key=lambda m: m[1], reverse=True)[:limit]:
         try:
             body, _, _ = fetcher.get(f"{API}/meeting?{urlencode({'issueID': issue_id, 'recordPacking': 'json'})}")

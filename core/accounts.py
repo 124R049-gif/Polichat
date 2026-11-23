@@ -1,6 +1,7 @@
-"""利用者の認証と、1日あたりの質問回数の制限。
+"""利用者の認証と、1日あたりの質問回数の制限。Web 画面・Bot・コマンドで共通。
 
 - 利用者は管理者がコマンドで登録する (`python main.py user add 名前`)。自由な新規登録はない
+- Bot など外部サービス経由の利用者は "discord:<ID>" のような名前で自動的に作る (external_user)
 - パスワードは scrypt (標準ライブラリ) でソルト付きハッシュにして保存する
 - ログインするとランダムなトークンを Cookie に入れ、DBにはそのハッシュだけを保存する
 - 質問1回ごとに当日の回数を数え、上限を超えたら受け付けない。日付はサーバーの現地時刻で切り替わる
@@ -8,8 +9,6 @@
 import hashlib
 import hmac
 import secrets
-import time
-from collections import defaultdict, deque
 from datetime import date, datetime, timedelta
 
 from config import AUTH
@@ -104,7 +103,7 @@ def list_users():
     return rows
 
 
-# ---- ログインとセッション ----
+# ---- ログインとセッション (Web 画面) ----
 
 def authenticate(username, password):
     """正しければ利用者の行を返す。違えば None。"""
@@ -155,34 +154,6 @@ def delete_session(token):
     conn.close()
 
 
-class LoginThrottle:
-    """同じ利用者名・同じ接続元からのログイン失敗が続いたら、しばらく受け付けない。
-
-    キーごとに上限を変えられる ({"user:...": 5, "ip:...": 20} のように渡す)。
-    プロキシ経由では全員が同じ接続元に見えるため、接続元の上限は大きめにする。"""
-
-    def __init__(self, window_seconds):
-        self.window = window_seconds
-        self.failures = defaultdict(deque)
-
-    def _recent(self, key):
-        q = self.failures[key]
-        while q and q[0] < time.monotonic() - self.window:
-            q.popleft()
-        return q
-
-    def blocked(self, limits):
-        return any(len(self._recent(k)) >= n for k, n in limits.items())
-
-    def fail(self, *keys):
-        for k in keys:
-            self._recent(k).append(time.monotonic())
-
-    def reset(self, *keys):
-        for k in keys:
-            self.failures.pop(k, None)
-
-
 # ---- 1日あたりの回数制限 ----
 
 def today():
@@ -199,6 +170,11 @@ def used_today(user_id):
                        (user_id, today())).fetchone()
     conn.close()
     return row["count"] if row else 0
+
+
+def remaining(user):
+    """本日の残り回数。"""
+    return max(daily_limit(user) - used_today(user["id"]), 0)
 
 
 def consume(user):
@@ -220,3 +196,7 @@ def refund(user_id, day):
                  (user_id, day))
     conn.commit()
     conn.close()
+
+
+def limit_message(user):
+    return f"本日の質問回数の上限 ({daily_limit(user)} 回) に達しました。明日になると再び使えます。"
