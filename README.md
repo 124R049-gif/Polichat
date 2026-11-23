@@ -200,6 +200,16 @@ Socket Mode で Slack へ外向きに接続するだけなので、公開 URL・
   `slash_ask: true` にするときは Slack 側にも `/ask` を登録し、DM で使うなら scope `im:write` も足す
 - 同時生成数は `llm.max_concurrent` (Web・Discord と合計)。超えた分は「順番待ちです」と表示して待つ
 
+## 試験公開版 (GitHub Pages)
+
+画面の見た目を見てもらうための、サーバーなしの版。https://124r049-gif.github.io/Polichat/
+
+- `site/index.html` は `web/index.html` をそのまま写したもの。`site/demo-api.js` がサーバーの API の代わりに `site/data/` の JSON を返す
+- タイムライン (出来事・分野の絞り込み・根拠の原文) は動く。AI の回答・質問、ログイン、会話の履歴は使えない (画面に案内を出す)
+- 国会議員個人の発言、地方選挙の候補者についての党の記事、会議録の題名にある発言者の氏名は載せない。根拠の原文は該当の一節を含む部分だけ
+- 作り直すとき: `python tools/export_site.py` (今の `data/crawler.db` と `web/index.html` から `site/` を作り直す)。
+  `main` に push すると `.github/workflows/pages.yml` が `site/` だけを公開する
+
 ## exe にまとめる
 
 ```
