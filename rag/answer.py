@@ -155,7 +155,7 @@ def speech_treatment(r):
     for rule in PARTY_RULES:
         if any(m in group for m in rule["match"]):
             if rule["speech"] == "party_line":
-                return f"党の方針に沿う発言 ({rule['party']}は規約で党の決定に反する意見の表明を制限している)"
+                return f"党の方針に沿う発言 ({rule['party']}は規約で党の決定・方針に反する意見の表明を制限している)"
             return (f"議員個人の発言 (非公式見解・参考意見。{rule['party']}の規約に意見表明の制限はないため、"
                     f"{rule['party']}の立場としては扱わない)")
     if _ROLE.search(group):

@@ -89,6 +89,13 @@ def cmd_embed(args):
 
 def cmd_events(args):
     from timeline.events import extract_pending
+    if args.reassign:
+        from database.db import get_connection
+        from timeline.events import reassign
+        conn = get_connection()
+        print(f"主体・議員個人の発言の印を付け直しました: {reassign(conn)} 件")
+        conn.close()
+        return
     scanned, saved = extract_pending(args.limit, redo=args.redo)
     print(f"タイムライン: {scanned} 組の資料から {saved} 件を取り出しました")
 
@@ -232,6 +239,8 @@ def main():
 
     p = sub.add_parser("events", help="タイムラインの出来事・予定を取り出す (LLM)")
     p.add_argument("-n", "--limit", type=int, help="LLM に渡す資料の組の数 (既定は timeline.max_per_run)")
+    p.add_argument("--reassign", action="store_true",
+                   help="LLM は使わず、取り出し済みの出来事の主体と議員個人の発言の印だけを付け直す (党規約・党名を変えたとき)")
     p.add_argument("--redo", action="store_true", help="取り出し済みの出来事を消して最初からやり直す (取り出し方を変えたとき)")
     p.set_defaults(func=cmd_events)
 

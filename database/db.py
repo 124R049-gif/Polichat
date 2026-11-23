@@ -133,6 +133,26 @@ CREATE TABLE IF NOT EXISTS event_scans (
     scanned_at  TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 会話履歴。チャット (kind = chat) とタイムラインの質問 (kind = timeline) で共有する (core/conversations.py)
+CREATE TABLE IF NOT EXISTS conversations (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    kind       TEXT NOT NULL,
+    title      TEXT NOT NULL,
+    created_at TEXT DEFAULT (datetime('now', 'localtime')),
+    updated_at TEXT DEFAULT (datetime('now', 'localtime'))
+);
+CREATE INDEX IF NOT EXISTS idx_conversations_user ON conversations(user_id, updated_at);
+CREATE TABLE IF NOT EXISTS conversation_messages (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    conversation_id INTEGER NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+    role            TEXT NOT NULL,      -- user / assistant
+    content         TEXT NOT NULL,
+    meta            TEXT,               -- JSON。質問: 絞り込み・対象の範囲の表示、回答: 出典の一覧
+    created_at      TEXT DEFAULT (datetime('now', 'localtime'))
+);
+CREATE INDEX IF NOT EXISTS idx_conversation_messages ON conversation_messages(conversation_id, id);
+
 CREATE TABLE IF NOT EXISTS articles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,

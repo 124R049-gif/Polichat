@@ -2,6 +2,10 @@
 
 予定 (planned) として載った出来事が後の資料で実施済み (done) になっている、のように状態が違っても
 同じ出来事ならまとめ、題名・状態・時期は新しい資料のものを使う。"""
+import json
+from datetime import date
+
+from config import PATHS
 from rag.answer import ORG_LABELS, speech_treatment
 from timeline.events import ACTORS, KINDS, STATUSES, grams, similar
 
@@ -32,14 +36,42 @@ def _same(a, b):
     return False  # 同じ状態で時期が離れている (毎年の行事など) は別の出来事
 
 
+_ACTOR = {a["id"]: a for a in ACTORS}
+
+
+def role(actor, when=None):
+    """その時点での立場: government (政府) / ruling (与党) / opposition (野党)。when は YYYY[-MM[-DD]]。"""
+    if actor == "government":
+        return "government"
+    when = when or date.today().isoformat()
+    for start, end in _ACTOR.get(actor, {}).get("ruling", []):
+        if start[:len(when)] <= when and (end is None or when <= end):
+            return "ruling"
+    return "opposition"
+
+
+def _field_filter(fields):
+    """分野の条件。出来事に付けた分野で絞り、出来事に分野がなければ資料に付いた分野タグ (document_tags) を使う。"""
+    marks = ",".join("?" * len(fields))
+    sql = f"""(e.field IN ({marks}) OR (e.field IS NULL AND EXISTS (
+                 SELECT 1 FROM document_tags dt JOIN tags t ON t.id = dt.tag_id
+                 WHERE dt.document_id = e.document_id AND t.kind = '分野' AND t.name IN ({marks}))))"""
+    return sql, list(fields) * 2
+
+
+def _actor_json(a):
+    return {"id": a["id"], "label": a["label"], "name": a["name"], "color": a.get("color"), "role": role(a["id"])}
+
+
 def timeline(conn, fields=None, actors=None, personal=False, date_from=None, date_to=None):
     """出来事を主体ごとにまとめて返す。時期のない予定 (date_from/to に関係なく) も含める。"""
     where, params = ["1 = 1"], []
     if not personal:
         where.append("e.personal = 0")
     if fields:
-        where.append(f"e.field IN ({','.join('?' * len(fields))})")
-        params += fields
+        sql, values = _field_filter(fields)
+        where.append(sql)
+        params += values
     if actors:
         where.append(f"e.actor IN ({','.join('?' * len(actors))})")
         params += actors
@@ -61,7 +93,7 @@ def timeline(conn, fields=None, actors=None, personal=False, date_from=None, dat
 
     merged = []
     for r in rows:
-        source = {"title": r["doc_title"], "url": r["url"], "date": r["published_date"],
+        source = {"event_id": r["id"], "title": r["doc_title"], "url": r["url"], "date": r["published_date"],
                   "source_name": r["source_name"], "org_label": ORG_LABELS.get(r["org_type"], r["org_type"]),
                   "speaker": r["author"], "treatment": speech_treatment(r), "quote": r["quote"]}
         ev = {"id": r["id"], "actor": r["actor"], "personal": bool(r["personal"]), "status": r["status"],
@@ -82,11 +114,12 @@ def timeline(conn, fields=None, actors=None, personal=False, date_from=None, dat
     for m in merged:
         del m["_grams"], m["_key"]
         m["sources"].sort(key=lambda s: s["date"] or "", reverse=True)
+        # 与党か野党かは出来事の時点で決める (時期未定の予定は最新の資料の日付)
+        m["role"] = role(m["actor"], m["start"] or m["sources"][0]["date"])
 
     present = {m["actor"] for m in merged}
     return {
-        "actors": [{"id": a["id"], "label": a["label"], "name": a["name"]} for a in ACTORS
-                   if a["id"] in present or (actors and a["id"] in actors)],
+        "actors": [_actor_json(a) for a in ACTORS if a["id"] in present or (actors and a["id"] in actors)],
         "events": merged,
         "statuses": STATUSES,
         "kinds": list(KINDS),
@@ -95,12 +128,17 @@ def timeline(conn, fields=None, actors=None, personal=False, date_from=None, dat
 
 def options(conn):
     """絞り込みの選択肢 (出来事のある分野と主体)、件数、資料の期間。"""
-    fields = [r[0] for r in conn.execute(
-        "SELECT field FROM events WHERE field IS NOT NULL GROUP BY field ORDER BY COUNT(*) DESC")]
+    with open(PATHS["taxonomy"], encoding="utf-8") as f:
+        taxonomy = list(json.load(f)["分野"])
+    per_field = {}
+    for name in taxonomy:  # 分類表の順。出来事のある分野だけを返す
+        sql, values = _field_filter([name])
+        n = conn.execute(f"SELECT COUNT(*) FROM events e WHERE e.personal = 0 AND {sql}", values).fetchone()[0]
+        if n:
+            per_field[name] = n
     counts = dict(conn.execute("SELECT actor, COUNT(*) FROM events WHERE personal = 0 GROUP BY actor").fetchall())
     span = conn.execute("SELECT MIN(start_date), MAX(COALESCE(end_date, start_date)) FROM events").fetchone()
     scanned = conn.execute("SELECT COUNT(*) FROM event_scans").fetchone()[0]
-    return {"fields": fields,
-            "actors": [{"id": a["id"], "label": a["label"], "name": a["name"], "count": counts.get(a["id"], 0)}
-                       for a in ACTORS],
+    return {"fields": [{"name": k, "count": v} for k, v in per_field.items()],
+            "actors": [_actor_json(a) | {"count": counts.get(a["id"], 0)} for a in ACTORS],
             "min_date": span[0], "max_date": span[1], "scanned": scanned}

@@ -13,11 +13,13 @@ from pydantic import BaseModel, Field
 
 from config import AUTH, RES_DIR
 from core import accounts as auth
+from core import conversations
 from core.answer_service import answer, service_status
 from database.db import get_connection
 from rag.answer import ORG_LABELS, speech_treatment
 from server.throttle import LoginThrottle
 from timeline import view as timeline_view
+from timeline.ask import prepare as timeline_ask_prepare
 
 COOKIE = "session"
 HISTORY_MESSAGES = 6  # LLMに渡す過去のやりとり (質問と回答で3往復分)
@@ -64,6 +66,26 @@ class ChatRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
     history: list[Message] = []
     filters: Filters = Filters()
+    conversation_id: int | None = None   # 続きの質問なら会話の ID (履歴に保存する先)
+    label: str = Field(default="", max_length=500)   # 履歴に残す「絞り込み・対象」の表示
+
+
+class TimelineScope(BaseModel):
+    """タイムラインで表示中の条件。"""
+    fields: list[str] = Field(default=[], max_length=30)
+    actors: list[str] = Field(default=[], max_length=30)
+    personal: bool = False
+    date_from: date | None = None
+    date_to: date | None = None
+
+
+class TimelineAskRequest(BaseModel):
+    question: str = Field(min_length=1, max_length=2000)
+    history: list[Message] = []
+    scope: TimelineScope = TimelineScope()
+    focus: int | None = None   # 選択中の出来事
+    conversation_id: int | None = None
+    label: str = Field(default="", max_length=500)
 
 
 @app.get("/")
@@ -151,19 +173,95 @@ def _source_json(n, r):
             "treatment": speech_treatment(r), "text": r["text"]}
 
 
-def _events(req: ChatRequest, user, day):
+def _events(req, user, day, kind, plan_fn=None):
     """1行1イベントのJSONを順に返す: (queued) → sources → delta (複数) → done / error。
+    最後まで生成できたら質問と回答を会話履歴に保存し、conversation (会話の ID) を返す。
     回数の精算は answer() が行う (サーバー側の失敗は戻し、利用者の中止は戻さない)。"""
     history = [m.model_dump() for m in req.history[-HISTORY_MESSAGES:]]
-    for ev in answer(user, req.question, history, req.filters.model_dump(mode="json"), day):
+    filters = req.filters.model_dump(mode="json") if hasattr(req, "filters") else None
+    text, sources = [], []
+    for ev in answer(user, req.question, history, filters, day, plan_fn):
         if ev["type"] == "sources":
-            ev = {"type": "sources", "sources": [_source_json(n, r) for n, r in enumerate(ev["sources"], 1)]}
+            sources = [_source_json(n, r) for n, r in enumerate(ev["sources"], 1)]
+            ev = {"type": "sources", "sources": sources}
+        elif ev["type"] == "delta":
+            text.append(ev["text"])
+        elif ev["type"] == "done" and text:
+            cid = req.conversation_id or conversations.create(user["id"], kind, req.question)
+            conversations.add_turn(cid, req.question, {"label": req.label}, "".join(text), {"sources": sources})
+            yield json.dumps({"type": "conversation", "id": cid}, ensure_ascii=False) + "\n"
         yield json.dumps(ev, ensure_ascii=False) + "\n"
+
+
+def _check_conversation(req, user):
+    if req.conversation_id is not None and conversations.owned(user["id"], req.conversation_id) is None:
+        raise HTTPException(404, "会話が見つかりません")
 
 
 @app.post("/api/chat")
 def chat(req: ChatRequest, user=Depends(current_user)):
     day = auth.today()
+    _check_conversation(req, user)
     if not auth.consume(user):
         raise HTTPException(429, auth.limit_message(user))
-    return StreamingResponse(_events(req, user, day), media_type="application/x-ndjson")
+    return StreamingResponse(_events(req, user, day, "chat"), media_type="application/x-ndjson")
+
+
+@app.post("/api/timeline/ask")
+def timeline_ask(req: TimelineAskRequest, user=Depends(current_user)):
+    """タイムラインで表示中の出来事について質問する。回数はチャットと共通。"""
+    day = auth.today()
+    _check_conversation(req, user)
+    if not auth.consume(user):
+        raise HTTPException(429, auth.limit_message(user))
+    history = [m.model_dump() for m in req.history[-HISTORY_MESSAGES:]]
+
+    def plan():
+        conn = get_connection()
+        try:
+            return timeline_ask_prepare(conn, req.question, history, req.scope.model_dump(mode="json"), req.focus)
+        finally:
+            conn.close()
+    return StreamingResponse(_events(req, user, day, "timeline", plan), media_type="application/x-ndjson")
+
+
+# ---- 会話履歴 (チャットとタイムラインで共通) ----
+@app.get("/api/conversations")
+def conversation_list(user=Depends(current_user)):
+    return conversations.list_for(user["id"])
+
+
+@app.get("/api/conversations/{conversation_id}")
+def conversation_get(conversation_id: int, user=Depends(current_user)):
+    conv = conversations.load(user["id"], conversation_id)
+    if conv is None:
+        raise HTTPException(404, "会話が見つかりません")
+    return conv
+
+
+@app.delete("/api/conversations/{conversation_id}")
+def conversation_delete(conversation_id: int, user=Depends(current_user)):
+    if not conversations.delete(user["id"], conversation_id):
+        raise HTTPException(404, "会話が見つかりません")
+    return {}
+
+
+@app.get("/api/timeline/source/{event_id}")
+def timeline_source(event_id: int, radius: int = 1, user=Depends(current_user)):
+    """出来事の根拠の原文を、該当のチャンクとその前後 radius 個まで返す (項目を押したときのプレビュー)。"""
+    radius = max(0, min(radius, 20))
+    conn = get_connection()
+    try:
+        ev = conn.execute("""SELECT e.document_id, e.quote, c.seq FROM events e
+                             LEFT JOIN chunks c ON c.id = e.chunk_id WHERE e.id = ?""", (event_id,)).fetchone()
+        if ev is None:
+            raise HTTPException(404, "出来事が見つかりません")
+        seq = ev["seq"] or 0
+        rows = conn.execute("""SELECT seq, page, text FROM chunks WHERE document_id = ? AND seq BETWEEN ? AND ?
+                               ORDER BY seq""", (ev["document_id"], seq - radius, seq + radius)).fetchall()
+        last = conn.execute("SELECT MAX(seq) FROM chunks WHERE document_id = ?", (ev["document_id"],)).fetchone()[0]
+        return {"quote": ev["quote"], "radius": radius,
+                "chunks": [{"seq": r["seq"], "page": r["page"], "text": r["text"], "hit": r["seq"] == seq} for r in rows],
+                "has_before": seq - radius > 0, "has_after": last is not None and seq + radius < last}
+    finally:
+        conn.close()

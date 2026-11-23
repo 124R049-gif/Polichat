@@ -193,7 +193,21 @@ def candidates(conn):
           AND (d.source_id IN ({','.join('?' * len(sources))}) OR d.file_type = 'speech')
           AND NOT EXISTS (SELECT 1 FROM event_scans e WHERE e.document_id = d.id)
         ORDER BY d.published_date DESC, d.id DESC""", sources).fetchall()
-    return [r for r in rows if actor_of(r)]
+    # 主体ごとに新しい順に並べ、主体を順番に回して1件ずつ取る。単純に新しい順だと、件数の多い政府
+    # (大臣・官僚の答弁は会議録の4割以上) が1回の処理数を使い切り、党の資料が後回しになるため
+    buckets = {}
+    for r in rows:
+        if (a := actor_of(r)):
+            buckets.setdefault(a[0], []).append(r)
+    queues = [iter(b) for b in buckets.values()]
+    fair = []
+    while queues:
+        for q in list(queues):
+            if (r := next(q, None)) is None:
+                queues.remove(q)
+            else:
+                fair.append(r)
+    return fair
 
 
 def _document_text(conn, doc_id):
@@ -237,6 +251,22 @@ def similar(a, b):
 DUPLICATE = 0.6   # 同じ組の資料から取り出した出来事どうしで、題名の重なりがこれ以上なら言い換えとみなす
 
 
+def reassign(conn):
+    """取り出し済みの出来事の主体と「議員個人の発言」の印を、今の actors.json・party_rules.json で付け直す。
+    党規約の確認が進んだときや党名が変わったときに、LLM で取り出し直さずに反映するため。変えた件数を返す。"""
+    rows = conn.execute("""
+        SELECT e.id, e.actor, e.personal, d.id AS doc_id, d.source_id, d.file_type, d.affiliation, s.org_type
+        FROM events e JOIN documents d ON d.id = e.document_id JOIN sources s ON s.id = d.source_id""").fetchall()
+    changed = []
+    for r in rows:
+        a = actor_of(r)
+        if a and (a[0], int(a[1])) != (r["actor"], r["personal"]):
+            changed.append((a[0], int(a[1]), r["id"]))
+    conn.executemany("UPDATE events SET actor = ?, personal = ? WHERE id = ?", changed)
+    conn.commit()
+    return len(changed)
+
+
 def reset(conn):
     """取り出した出来事と記録を消す (下読みで LLM に渡さなかった発言の記録は残す)。"""
     conn.execute("DELETE FROM events")
@@ -254,6 +284,8 @@ def extract_pending(limit=None, redo=False):
     conn = get_connection()
     if redo:
         reset(conn)
+    if (n := reassign(conn)):
+        print(f"主体・議員個人の発言の印を付け直した出来事: {n} 件 (党規約・党名の変更を反映)")
     docs = candidates(conn)
     limit = limit or TIMELINE["max_per_run"]
     _, model, device = endpoint("tag")

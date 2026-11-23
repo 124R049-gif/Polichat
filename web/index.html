@@ -152,7 +152,8 @@ body.locked #timeline { display: none; }
   border-right: 1px solid var(--line); font-size: 13px; font-weight: 600; display: flex; flex-direction: column; gap: 2px;
 }
 .tl-label small { font-weight: 400; color: var(--muted); font-size: 11px; }
-.tl-label.government { color: var(--government); } .tl-label.party { color: var(--party); }
+.tl-label { color: var(--ct); }
+.role-tag { font-size: 10px; font-weight: 400; border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; width: fit-content; line-height: 1.5; }
 .tl-track { position: relative; flex: none; }
 .tl-undated { position: sticky; right: 0; z-index: 2; background: var(--panel); flex: none; width: 150px; border-left: 1px dashed var(--line); padding: 6px; display: flex; flex-direction: column; gap: 4px; }
 .tl-axis-tick { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--line); font-size: 11px; color: var(--muted); padding: 4px 0 0 4px; white-space: nowrap; }
@@ -163,11 +164,17 @@ body.locked #timeline { display: none; }
   position: absolute; height: 22px; display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 22px;
   background: none; border: 0; padding: 0 4px 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; color: var(--text);
 }
-.ev .dot { flex: none; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--c); background: var(--c); }
-.ev.planned .dot { background: var(--panel); }
-.ev.ongoing .dot { background: linear-gradient(90deg, var(--c) 50%, var(--panel) 50%); }
+/* 印の形: ○ 与党 / □ 野党 / ◇ 政府。塗り: 実施済み=塗り、進行中=半分、予定=白抜き */
+.dot { flex: none; display: inline-block; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--c); background: var(--c); }
+.role-opposition .dot, .dot.role-opposition { border-radius: 1px; }
+.role-government .dot, .dot.role-government { border-radius: 1px; transform: rotate(45deg) scale(.82); }
+.planned .dot, .dot.planned { background: var(--panel); }
+.ongoing .dot, .dot.ongoing { background: linear-gradient(90deg, var(--c) 50%, var(--panel) 50%); }
+.role-government.ongoing .dot, .dot.role-government.ongoing { background: linear-gradient(135deg, var(--c) 50%, var(--panel) 50%); }
+[style*="--c"] { --ct: var(--c); }
+@media (prefers-color-scheme: dark) { [style*="--c"] { --ct: color-mix(in srgb, var(--c) 62%, #fff); } }
 .ev .t { overflow: hidden; text-overflow: ellipsis; }
-.ev.span { border: 1.5px solid var(--c); border-radius: 5px; background: color-mix(in srgb, var(--c) 14%, var(--panel)); padding: 0 6px; }
+.ev.span { border: 1.5px solid var(--c); border-radius: 5px; background: color-mix(in srgb, var(--c) 14%, var(--panel)); padding: 0 6px 0 4px; }
 .ev.span.planned { border-style: dashed; background: var(--panel); }
 .ev.span.open { border-right-style: dotted; border-top-right-radius: 0; border-bottom-right-radius: 0; }
 .ev.personal { opacity: .75; } .ev.personal .t { font-style: italic; }
@@ -177,10 +184,61 @@ body.locked #timeline { display: none; }
 .ev.undated { position: static; width: 100%; }
 .ev.many { color: var(--accent); }
 .tl-more { position: absolute; right: 4px; bottom: 2px; font-size: 11px; background: var(--accent-soft); color: var(--accent); border: 0; border-radius: 4px; padding: 0 6px; z-index: 1; }
-.c-government { --c: var(--government); } .c-party { --c: var(--party); }
 
-.tl-detail { width: 360px; flex: none; position: sticky; top: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 13px; max-height: calc(100vh - 120px); overflow-y: auto; }
-.tl-detail:empty { display: none; }
+/* 右のサイドパネル (詳細 / 質問)。開閉でき、開いている間は画面の右に固定される */
+.tl-side { width: 380px; flex: none; position: sticky; top: 8px; height: calc(100vh - 80px); display: none; flex-direction: column;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; font-size: 13px; overflow: hidden; }
+body.tl-side-on .tl-side { display: flex; }
+.tl-side-head { display: flex; align-items: center; border-bottom: 1px solid var(--line); padding: 6px 6px 6px 14px; flex: none; }
+.tl-side-head b { font-size: 14px; }
+.tl-side-close { margin-left: auto; background: none; border: 0; color: var(--muted); font-size: 18px; line-height: 1; padding: 4px 8px; }
+/* 右端のアイコン。押すとパネルをそのタブで開き、開いているタブをもう一度押すと閉じる */
+.tl-rail { flex: none; position: sticky; top: 8px; display: flex; flex-direction: column; gap: 4px; padding: 4px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+.tl-rail button { width: 44px; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 6px 0 4px;
+  background: none; border: 0; border-radius: 8px; color: var(--muted); font-size: 10px; }
+.tl-rail button:hover { background: var(--accent-soft); color: var(--accent); }
+.tl-rail svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body.tl-side-on .tl-rail button.on { background: var(--accent); color: var(--panel); }
+.tl-rail button { position: relative; }
+/* 項目を選んでいてパネルが閉じているときは、詳細のアイコンに印を付ける */
+body:not(.tl-side-on) .tl-rail button.has::after { content: ""; position: absolute; top: 4px; right: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.tl-pane { display: none; flex: 1; min-height: 0; }
+.tl-side[data-tab="detail"] .tl-pane[data-pane="detail"] { display: block; overflow-y: auto; padding: 12px 14px; }
+.tl-side[data-tab="ask"] .tl-pane[data-pane="ask"] { display: flex; flex-direction: column; padding: 8px 12px 10px; }
+.tl-side[data-tab="history"] .tl-pane[data-pane="history"] { display: block; overflow-y: auto; padding: 8px 10px; }
+.tl-ask-top { display: flex; gap: 8px; align-items: baseline; padding-bottom: 6px; border-bottom: 1px dashed var(--line); }
+.tl-ask-top .meta { flex: 1; }
+.tl-ask-new { flex: none; background: none; border: 1px solid var(--line); border-radius: 6px; padding: 1px 8px; font-size: 12px; }
+.tl-howto { margin-bottom: 0; }
+/* 会話の履歴 */
+.history { position: fixed; top: 52px; right: 16px; width: min(420px, calc(100vw - 32px)); max-height: 70vh; z-index: 30;
+  display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18); font-size: 13px; }
+.history[hidden] { display: none; }
+.history-head { display: flex; gap: 8px; align-items: baseline; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.history-head .meta { color: var(--muted); font-size: 12px; }
+.history-close { margin-left: auto; background: none; border: 0; font-size: 18px; color: var(--muted); }
+.history-list { overflow-y: auto; padding: 4px; }
+.history .history-list { padding: 6px; }
+.h-item { display: flex; gap: 8px; align-items: center; width: 100%; padding: 6px 8px; border-radius: 6px; }
+.h-item:hover { background: var(--accent-soft); }
+.h-item.on { outline: 1px solid var(--accent); }
+.h-open { flex: 1; min-width: 0; text-align: left; background: none; border: 0; padding: 0; display: flex; flex-direction: column; }
+.h-open .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.h-open .meta { color: var(--muted); font-size: 11px; }
+.h-kind { flex: none; font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; color: var(--muted); }
+.h-kind.timeline { color: var(--accent); border-color: currentColor; }
+.h-del { flex: none; background: none; border: 0; color: var(--muted); font-size: 14px; }
+#history-btn { background: none; border: 1px solid var(--line); border-radius: 6px; padding: 2px 10px; font-size: 12px; }
+body.locked #history-btn { display: none; }
+/* 原文のプレビュー */
+.preview { margin: 6px 0; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); max-height: 320px; overflow-y: auto; font-size: 12px; }
+.preview .chunk { white-space: pre-wrap; padding: 6px 9px; color: var(--muted); }
+.preview .chunk.hit { color: var(--text); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.preview mark { background: color-mix(in srgb, #f0c000 45%, transparent); color: inherit; border-radius: 2px; }
+.preview .more { display: block; width: 100%; background: none; border: 0; border-top: 1px dashed var(--line); color: var(--accent); font-size: 12px; padding: 4px; }
+.preview .more:first-child { border-top: 0; border-bottom: 1px dashed var(--line); }
 .tl-detail h3 { font-size: 15px; margin: 6px 0; line-height: 1.5; }
 .tl-detail .close { float: right; background: none; border: 0; color: var(--muted); font-size: 16px; line-height: 1; }
 .tl-detail .badges { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -193,18 +251,64 @@ body.locked #timeline { display: none; }
 .tl-detail a { color: var(--accent); word-break: break-all; }
 .tl-detail .ask { margin-top: 12px; background: none; border: 1px solid var(--accent); color: var(--accent); border-radius: 6px; padding: 3px 10px; font-size: 12px; }
 .tl-empty { padding: 40px 16px; text-align: center; color: var(--muted); }
+.tl-edge { position: absolute; left: 6px; top: 4px; font-size: 11px; color: var(--muted); white-space: nowrap; z-index: 1; background: var(--panel); padding: 0 4px; }
+.tl-older { margin-top: 10px; background: none; border: 1px dashed var(--line); border-radius: 8px; padding: 6px 12px; font-size: 12px; color: var(--accent); }
+.tl-ask .meta { font-size: 12px; color: var(--muted); }
+#tl-ask-scope { padding-bottom: 6px; border-bottom: 1px dashed var(--line); }
+#tl-ask-log { flex: 1; min-height: 0; overflow-y: auto; padding-right: 2px; }   /* やりとりはパネルの中だけでスクロール */
+.tl-ask form { max-width: none; margin: 8px 0 0; flex: none; }
+#tl-ask-send { background: var(--accent); color: var(--panel); border: 0; border-radius: 10px; padding: 8px 18px; }
+#tl-ask-log .turn { margin: 10px 0 16px; }
 
 /* 一覧表示 (幅の狭い画面) */
 .tl-list { display: flex; flex-direction: column; gap: 6px; }
 .tl-list .month { font-size: 13px; font-weight: 600; color: var(--muted); margin: 12px 0 2px; }
 .tl-list .today-bar { border-top: 2px solid #d0502a; color: #d0502a; font-size: 12px; padding-top: 2px; margin: 10px 0 4px; }
 .tl-item { display: flex; gap: 8px; align-items: baseline; text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font-size: 13px; width: 100%; }
-.tl-item .who { flex: none; font-size: 11px; font-weight: 600; padding: 0 6px; border-radius: 4px; border: 1px solid var(--c); color: var(--c); }
+.tl-item .who { flex: none; display: inline-flex; gap: 4px; align-items: center; font-size: 11px; font-weight: 600; padding: 0 6px; border-radius: 4px; border: 1px solid var(--c); color: var(--ct); }
+.tl-item .who .dot { width: 8px; height: 8px; border-width: 1.5px; }
+.chip[data-actor] { border-color: var(--c); }
+.chip[data-actor].on { background: color-mix(in srgb, var(--c) 18%, var(--panel)); color: var(--ct); border-color: var(--c); }
+/* 行ごとの表示・非表示。非表示の行は年表の一番下に、細くまとめて置く */
+.tl-label .lane-toggle { margin-top: 3px; width: fit-content; background: none; border: 1px solid var(--line); border-radius: 4px;
+  padding: 0 5px; font-size: 10px; font-weight: 400; color: var(--muted); line-height: 1.6; }
+.tl-label .lane-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.tl-row.sep .tl-label, .tl-row.sep .tl-track { font-size: 11px; font-weight: 400; color: var(--muted); padding: 3px 8px; background: var(--bg); }
+.tl-row.sep .tl-track { padding-left: 14px; }
+.tl-row.off .tl-label { color: var(--muted); flex-direction: row; flex-wrap: wrap; align-items: center; gap: 2px 6px; padding: 4px 8px; }
+.tl-row.off .tl-label .lane-toggle { margin: 0; color: var(--accent); border-color: var(--accent); }
+.tl-row.off .tl-track { opacity: .5; }
+.tl-row.off .tl-undated { font-size: 11px; color: var(--muted); }
+/* 分野: グループごとに並べた選択パネル。選んだ分野は横にタグで出す */
+.tl-fieldbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 8px; font-size: 13px; position: relative; }
+.tl-fieldbar > .label { color: var(--muted); }
+#tl-field-btn { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 2px 10px; font-size: 12px; }
+#tl-field-btn[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+.ftag { display: inline-flex; align-items: center; gap: 4px; background: var(--accent-soft); color: var(--accent); border: 0; border-radius: 999px; padding: 1px 4px 1px 10px; font-size: 12px; }
+.ftag span { font-size: 13px; line-height: 1; padding: 0 4px; }
+.tl-fieldpop { position: absolute; top: calc(100% + 4px); left: 0; z-index: 25; width: min(640px, calc(100vw - 32px)); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, .18); padding: 10px 12px; }
+.tl-fieldpop[hidden] { display: none; }
+.fgroup { display: grid; grid-template-columns: 7.5em 1fr; gap: 6px 10px; align-items: start; padding: 6px 0; border-top: 1px dashed var(--line); }
+.fgroup:first-of-type { border-top: 0; }
+.fgroup > b { font-size: 12px; color: var(--muted); font-weight: 600; padding-top: 3px; }
+.fgroup .frow { margin: 0; }
+.fchip { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 1px 4px 1px 10px; font-size: 12px; }
+.fchip small { min-width: 1.8em; text-align: center; background: var(--bg); color: var(--muted); border-radius: 999px; padding: 0 5px; font-size: 11px; }
+.fchip.on { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.fchip.on small { background: color-mix(in srgb, var(--panel) 25%, transparent); color: inherit; }
+.tl-fieldpop .foot { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); margin-top: 6px; padding-top: 8px; font-size: 12px; color: var(--muted); }
+.tl-fieldpop .foot button { background: none; border: 1px solid var(--line); border-radius: 6px; padding: 1px 10px; font-size: 12px; }
+.ev-field { font-size: 10px; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; flex: none; }
 .tl-item .when { flex: none; font-size: 11px; color: var(--muted); }
 .tl-item.sel { border-color: var(--accent); }
 @media (max-width: 900px) {
-  .tl-body { flex-direction: column; }
-  .tl-detail { width: 100%; position: static; max-height: none; }
+  /* 狭い画面では下からせり上がるパネルにする */
+  .tl-side { position: fixed; left: 0; right: 0; bottom: 0; top: auto; width: auto; height: 72vh; z-index: 20;
+    border-radius: 14px 14px 0 0; box-shadow: 0 -6px 24px rgba(0, 0, 0, .18); }
+  /* アイコンは画面の右端に浮かべ、パネルを開いている間はパネルのすぐ上に置く */
+  .tl-rail { position: fixed; right: 8px; top: auto; bottom: 16px; z-index: 21; box-shadow: 0 4px 14px rgba(0, 0, 0, .16); }
+  body.tl-side-on .tl-rail { flex-direction: row; bottom: calc(72vh + 8px); }
 }
 </style>
 </head>
@@ -218,6 +322,7 @@ body.locked #timeline { display: none; }
   </div>
   <div id="status"></div>
   <div id="me"></div>
+  <button id="history-btn" type="button">履歴</button>
   <button id="new" type="button">新しい会話</button>
 </header>
 
@@ -229,6 +334,12 @@ body.locked #timeline { display: none; }
   <button type="submit">ログイン</button>
   <div class="error" id="login-error"></div>
 </form>
+
+<div id="history" class="history" hidden>
+  <div class="history-head"><b>会話の履歴</b><span class="meta">チャットとタイムラインの質問</span>
+    <button type="button" class="history-close" data-history-close aria-label="閉じる">×</button></div>
+  <div class="history-list" id="history-list"></div>
+</div>
 
 <main id="scroll">
   <div id="log">
@@ -248,7 +359,6 @@ body.locked #timeline { display: none; }
 <section id="timeline">
   <div class="tl-wrap">
     <div class="tl-controls">
-      <label>分野 <select id="tl-field"><option value="">すべて</option></select></label>
       <span class="frow" id="tl-range">
         <button type="button" class="chip" data-months="3">前後3か月</button>
         <button type="button" class="chip on" data-months="6">前後6か月</button>
@@ -258,18 +368,53 @@ body.locked #timeline { display: none; }
       <label><input type="checkbox" id="tl-personal"> 議員個人の発言も表示</label>
       <label>表示 <select id="tl-mode"><option value="auto">自動</option><option value="lanes">年表</option><option value="list">一覧</option></select></label>
     </div>
-    <div class="frow" id="tl-actors" style="margin: 0 0 8px"></div>
+    <div class="tl-fieldbar" id="tl-fieldbar">
+      <span class="label">分野</span>
+      <button type="button" id="tl-field-btn" aria-expanded="false" aria-controls="tl-fieldpop">すべて ▾</button>
+      <span class="frow" id="tl-field-tags" style="margin:0"></span>
+      <div class="tl-fieldpop" id="tl-fieldpop" hidden></div>
+    </div>
+    <div class="frow" id="tl-actors" style="margin: 0 0 8px" hidden></div>
+    <div class="tl-legend tl-howto">項目をクリックで根拠の原文を表示、ダブルクリックで LLM が資料を読んで説明 (質問の回数を1回使う)</div>
     <div class="tl-legend">
-      <span><i class="dot-ic" style="width:10px;height:10px;border-radius:50%;background:var(--muted)"></i>実施済み</span>
-      <span><i style="width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,var(--muted) 50%,transparent 50%);border:2px solid var(--muted)"></i>進行中</span>
-      <span><i style="width:10px;height:10px;border-radius:50%;border:2px solid var(--muted)"></i>予定・目標</span>
+      <span><i class="dot" style="--c:var(--muted)"></i>与党</span>
+      <span><i class="dot role-opposition" style="--c:var(--muted)"></i>野党</span>
+      <span><i class="dot role-government" style="--c:var(--muted)"></i>政府</span>
+      <span>｜ 塗り: <i class="dot" style="--c:var(--muted);margin-left:4px"></i>実施済み</span>
+      <span><i class="dot ongoing" style="--c:var(--muted)"></i>進行中</span>
+      <span><i class="dot planned" style="--c:var(--muted)"></i>予定・目標</span>
       <span><i style="width:22px;height:10px;border:1.5px solid var(--muted);border-radius:3px"></i>期間のあるもの (点線は予定)</span>
       <span><i style="width:2px;height:12px;background:#d0502a"></i>今日</span>
     </div>
     <p class="tl-note" id="tl-note"></p>
     <div class="tl-body">
       <div style="flex:1;min-width:0" id="tl-main"></div>
-      <aside class="tl-detail" id="tl-detail"></aside>
+      <aside class="tl-side" id="tl-side" aria-label="詳細と質問">
+        <div class="tl-side-head">
+          <b id="tl-side-title"></b>
+          <button type="button" class="tl-side-close" data-side-close aria-label="パネルを閉じる" title="パネルを閉じる">×</button>
+        </div>
+        <div class="tl-pane tl-detail" data-pane="detail" id="tl-detail"></div>
+        <div class="tl-pane" data-pane="history"><div class="history-list" id="tl-history-list"></div></div>
+        <section class="tl-pane tl-ask" data-pane="ask" id="tl-ask">
+          <div class="tl-ask-top"><span class="meta" id="tl-ask-scope"></span>
+            <button type="button" class="tl-ask-new" id="tl-ask-new">新しい会話</button></div>
+          <div id="tl-ask-log"><p class="meta tl-ask-hint">表示中の範囲 (期間・分野・行・選択中の項目) の出来事と、その根拠の原文から答えます。
+            年表の条件を変えると、次の質問からその範囲が対象になります。回数はチャットと共通です。</p></div>
+          <form id="tl-ask-form">
+            <textarea id="tl-ask-input" rows="1" maxlength="2000" placeholder="例: 定数削減について、与党と野党はそれぞれ何をしてきたか"></textarea>
+            <button id="tl-ask-send" type="submit">質問</button>
+          </form>
+        </section>
+      </aside>
+      <nav class="tl-rail" id="tl-rail" aria-label="パネル">
+        <button type="button" data-tab="detail" title="選んだ項目の詳細と原文" aria-label="詳細">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>詳細</button>
+        <button type="button" data-tab="ask" title="年表の内容について質問する" aria-label="質問">
+          <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg>質問</button>
+        <button type="button" data-tab="history" title="会話の履歴 (チャットと共通)" aria-label="履歴">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>履歴</button>
+      </nav>
     </div>
   </div>
 </section>
@@ -389,16 +534,14 @@ function loadOptions() {
   });
 }
 
-const nearBottom = () => scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight < 80;
-const toBottom = () => { scroller.scrollTop = scroller.scrollHeight; };
-
-async function ask(question) {
-  $("welcome")?.remove();
+// 質問1件を送り、回答を逐次表示する (チャットとタイムラインの質問欄で共通)。{answer, failed} を返す
+async function streamTurn({ url, body, parent, question, label, signal, scrollEl }) {
+  const nearBottom = () => scrollEl.scrollHeight - scrollEl.scrollTop - scrollEl.clientHeight < 80;
+  const toBottom = () => { scrollEl.scrollTop = scrollEl.scrollHeight; };
   const turn = document.createElement("div");
   turn.className = "turn";
-  const { filters, label } = currentFilters();
-  turn.innerHTML = `<div class="q">${esc(question)}</div>${label ? `<div class="used">絞り込み: ${esc(label)}</div>` : ""}<div class="a"></div><div class="wait"></div><div class="srcbox"></div>`;
-  log.appendChild(turn);
+  turn.innerHTML = `<div class="q">${esc(question)}</div>${label ? `<div class="used">${esc(label)}</div>` : ""}<div class="a"></div><div class="wait"></div><div class="srcbox"></div>`;
+  parent.appendChild(turn);
   const [answerEl, waitEl, srcEl] = [".a", ".wait", ".srcbox"].map((s) => turn.querySelector(s));
   toBottom();
 
@@ -408,7 +551,7 @@ async function ask(question) {
   tick();
   const timer = setInterval(tick, 1000);
 
-  let answer = "", failed = false;
+  let answer = "", failed = false, conversation = null;
   const handle = (ev) => {
     if (ev.type === "queued") {
       phase = "順番待ちです (他の質問の回答を生成中)";
@@ -421,6 +564,8 @@ async function ask(question) {
       answer += ev.text;
       answerEl.innerHTML = render(answer);
       if (stick) toBottom();
+    } else if (ev.type === "conversation") {
+      conversation = ev.id;   // 履歴に保存された会話 (続きの質問はここに足す)
     } else if (ev.type === "done") {
       if (typeof ev.remaining === "number") showRemaining(ev.remaining);
     } else if (ev.type === "error") {
@@ -429,12 +574,10 @@ async function ask(question) {
     }
   };
 
-  controller = new AbortController();
-  send.textContent = "中止";
   try {
-    const res = await fetch("/api/chat", {
+    const res = await fetch(url, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question, history, filters }), signal: controller.signal,
+      body: JSON.stringify(body), signal,
     });
     if (res.status === 401) { lock(); throw new Error("ログインが切れました。もう一度ログインしてください"); }
     if (!res.ok) {
@@ -457,32 +600,58 @@ async function ask(question) {
     answerEl.insertAdjacentHTML("beforeend", `<p class="error">${esc(message)}</p>`);
   } finally {
     clearInterval(timer);
-    controller = null;
-    send.textContent = "送信";
     waitEl.className = "wait-done";
     waitEl.textContent = "";
-    if (!failed && answer) {
-      // 資料本文は履歴に入れない (質問と回答だけを次の文脈にする)
-      history.push({ role: "user", content: question }, { role: "assistant", content: answer });
-    }
-    input.focus();
   }
+  return { answer, failed, conversation };
+}
+
+// 履歴から開いた会話の1往復を表示する (生成はしない)
+function renderSavedTurn(parent, question, label, answer, sources) {
+  const turn = document.createElement("div");
+  turn.className = "turn";
+  turn.innerHTML = `<div class="q">${esc(question)}</div>${label ? `<div class="used">${esc(label)}</div>` : ""}` +
+    `<div class="a">${render(answer)}</div><div class="srcbox">${sources?.length ? sourcesHtml(sources) : ""}</div>`;
+  turn.querySelector(".sources")?.removeAttribute("open");
+  parent.appendChild(turn);
+}
+
+let chatConversation = null; // 履歴に保存している会話の ID (新しい会話なら null)
+async function ask(question) {
+  $("welcome")?.remove();
+  const { filters, label } = currentFilters();
+  controller = new AbortController();
+  send.textContent = "中止";
+  const shown = label && `絞り込み: ${label}`;
+  const { answer, failed, conversation } = await streamTurn({ url: "/api/chat",
+    body: { question, history, filters, conversation_id: chatConversation, label: shown || "" }, parent: log,
+    question, label: shown, signal: controller.signal, scrollEl: scroller });
+  if (conversation) chatConversation = conversation;
+  controller = null;
+  send.textContent = "送信";
+  if (!failed && answer) {
+    // 資料本文は履歴に入れない (質問と回答だけを次の文脈にする)
+    history.push({ role: "user", content: question }, { role: "assistant", content: answer });
+  }
+  input.focus();
 }
 
 // 引用番号を押したら、その回答の該当資料を開いて示す
-log.addEventListener("click", (e) => {
+function openCite(e) {
   const cite = e.target.closest(".cite");
-  if (cite) {
-    const turn = cite.closest(".turn");
-    const src = turn.querySelector(`.src[data-n="${cite.dataset.n}"]`);
-    if (!src) return;
-    turn.querySelector(".sources").open = true;
-    turn.querySelectorAll(".src.hit").forEach((el) => el.classList.remove("hit"));
-    src.open = true;
-    src.classList.add("hit");
-    src.scrollIntoView({ behavior: "smooth", block: "center" });
-    return;
-  }
+  if (!cite) return false;
+  const turn = cite.closest(".turn");
+  const src = turn.querySelector(`.src[data-n="${cite.dataset.n}"]`);
+  if (!src) return true;
+  turn.querySelector(".sources").open = true;
+  turn.querySelectorAll(".src.hit").forEach((el) => el.classList.remove("hit"));
+  src.open = true;
+  src.classList.add("hit");
+  src.scrollIntoView({ behavior: "smooth", block: "center" });
+  return true;
+}
+log.addEventListener("click", (e) => {
+  if (openCite(e)) return;
   const example = e.target.closest(".examples button");
   if (example && !controller) ask(example.textContent);
 });
@@ -558,9 +727,10 @@ $("me").addEventListener("click", async (e) => {
 });
 
 // ---- タイムライン (政府・各党の出来事と予定) ----
-const TL = { options: null, data: null, selected: null, expanded: new Set(), hidden: new Set(), seq: 0 };
+const TL = { options: null, data: null, selected: null, expanded: new Set(), hidden: new Set(), fields: new Set(), colors: {}, seq: 0 };
 const STATUS_LABEL = { done: "実施済み", ongoing: "進行中", planned: "予定・目標" };
 const LABEL_W = 76, UNDATED_W = 150, ROW_H = 26, MAX_ROWS = 5, MONTH_MIN_PX = 60;
+const LABEL_MIN_H = 64; // 行の名前の欄 (名前・与野党・件数・非表示ボタン) が収まる高さ
 const today = new Date(); today.setHours(0, 0, 0, 0);
 const iso = (d) => d.toLocaleDateString("sv-SE");
 const addMonths = (d, n) => new Date(d.getFullYear(), d.getMonth() + n, d.getDate());
@@ -579,34 +749,101 @@ function whenText(ev) {
   return ev.end ? `${f(ev.start)} 〜 ${f(ev.end)}` : f(ev.start);
 }
 const overdue = (ev) => ev.status === "planned" && ev.start && parseWhen(ev.end || ev.start, true) < today;
-const actorClass = (id) => (id === "government" ? "government" : "party");
+const ROLE_LABEL = { ruling: "与党", opposition: "野党", government: "政府" };
+const actorColor = (id) => (TL.colors[id] || "var(--muted)");
 
-function tlRange() {
+// 表示範囲。初めは今日の前後 (期間のボタン) で、左端までスクロールすると前の時期を読み足していく。
+// 今の情報だけを見たい人には過去を読み込まず、さかのぼりたい人だけが左へ進む
+const PAST_STEP_MONTHS = 6, PAST_PAD = 200;
+const monthsBetween = (a, b) => Math.max(1, Math.round((b - a) / (30.4 * 86400000)));
+function setRangePreset() {
   const months = +$("tl-range").querySelector(".chip.on").dataset.months;
-  if (months) return [addMonths(today, -months), addMonths(today, months)];
-  const o = TL.options || {};
-  const from = parseWhen(o.min_date) || addMonths(today, -12), to = parseWhen(o.max_date, true) || today;
-  return [new Date(Math.min(from, addMonths(today, -1))), new Date(Math.max(to, addMonths(today, 3)))];
+  if (months) {
+    TL.from = addMonths(today, -months); TL.to = addMonths(today, months);
+  } else {
+    const o = TL.options || {};
+    const from = parseWhen(o.min_date) || addMonths(today, -12), to = parseWhen(o.max_date, true) || today;
+    TL.from = new Date(Math.min(from, addMonths(today, -1))); TL.to = new Date(Math.max(to, addMonths(today, 3)));
+  }
+  TL.baseMonths = monthsBetween(TL.from, TL.to); // 目盛りの細かさはこの幅で決め、読み足しても変えない
+  TL.centerDate = null; TL.keepScroll = null;
+}
+const tlRange = () => [TL.from, TL.to];
+// 収集した出来事のうちいちばん古い時期より前へは読み足さない (資料が増えれば、そのぶん明治までさかのぼれる)
+const earliest = () => parseWhen(TL.options?.min_date);
+const canGoBack = () => { const e = earliest(); return !!e && TL.from > addMonths(e, -1); };
+function extendPast() {
+  if (TL.loadingPast || !canGoBack()) return;
+  TL.loadingPast = true;
+  const sc = $("tl-scroll");
+  TL.keepScroll = sc ? { left: sc.scrollLeft, months: PAST_STEP_MONTHS } : null;
+  TL.from = addMonths(TL.from, -PAST_STEP_MONTHS);
+  loadTimeline(true).finally(() => { TL.loadingPast = false; });
+}
+
+// 分野のまとめ方 (表示のためだけ。分類表に新しい分野が増えたら「その他」に入る)
+const FIELD_GROUPS = [
+  ["社会保障", ["福祉", "介護", "医療", "年金", "子育て・教育"]],
+  ["くらし・地域", ["くらし・消費", "住宅・都市", "防災・災害", "地方自治", "人権・共生"]],
+  ["経済・仕事", ["雇用・労働", "経済・産業", "財政・税制", "農林水産", "環境・エネルギー", "科学技術"]],
+  ["国の運営", ["政治・選挙", "行政・デジタル", "司法・治安", "外交・安全保障"]],
+];
+function syncFields() {
+  const sel = [...TL.fields];
+  $("tl-field-btn").textContent = (sel.length ? `${sel.length} 分野を選択中` : "すべて") + " ▾";
+  $("tl-field-tags").innerHTML = sel.map((n) =>
+    `<button type="button" class="ftag" data-field-off="${esc(n)}" title="この分野の選択を外す">${esc(n)}<span>×</span></button>`).join("");
+  $("tl-fieldpop").querySelectorAll(".fchip").forEach((c) => c.classList.toggle("on", TL.fields.has(c.dataset.field)));
+}
+function setFieldPop(open) {
+  $("tl-fieldpop").hidden = !open;
+  $("tl-field-btn").setAttribute("aria-expanded", String(open));
+}
+// 非表示にした行は、この閲覧者のブラウザに覚えておく
+function saveHidden() { try { localStorage.setItem("tl-hidden", JSON.stringify([...TL.hidden])); } catch {} }
+try { JSON.parse(localStorage.getItem("tl-hidden") || "[]").forEach((id) => TL.hidden.add(id)); } catch {}
+function syncActorChips() {
+  $("tl-actors").querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", !TL.hidden.has(c.dataset.actor)));
+}
+function setHidden(id, hide) {
+  hide ? TL.hidden.add(id) : TL.hidden.delete(id);
+  saveHidden(); syncActorChips(); renderTimeline();
 }
 
 async function loadTimelineOptions() {
   const o = await fetch("/api/timeline/options").then((r) => r.json());
   TL.options = o;
-  $("tl-field").innerHTML = `<option value="">すべて</option>` + o.fields.map((f) => `<option>${esc(f)}</option>`).join("");
+  o.actors.forEach((a) => { TL.colors[a.id] = a.color; });
+  // 分野は資料のタグ付けと同じ分類表。20 ほどあるので、近いものをまとめたグループごとに並べる。
+  // 複数選ぶと、どれかに当てはまるものを出す
+  const counts = Object.fromEntries(o.fields.map((f) => [f.name, f.count]));
+  const grouped = new Set(FIELD_GROUPS.flatMap((g) => g[1]));
+  const groups = [...FIELD_GROUPS, ["その他", o.fields.map((f) => f.name).filter((n) => !grouped.has(n))]];
+  $("tl-fieldpop").innerHTML = groups.map(([title, names]) => {
+    const chips = names.filter((n) => counts[n]).map((n) =>
+      `<button type="button" class="fchip" data-field="${esc(n)}">${esc(n)}<small>${counts[n]}</small></button>`).join("");
+    return chips ? `<div class="fgroup"><b>${esc(title)}</b><div class="frow">${chips}</div></div>` : "";
+  }).join("") +
+    `<div class="foot"><span>数字は出来事の件数 (議員個人の発言を除く)。複数選ぶと、どれかに当てはまるものを表示</span>` +
+    `<button type="button" data-field-clear>選択を外す</button></div>`;
+  syncFields();
   $("tl-actors").innerHTML = `<span class="label" style="color:var(--muted);font-size:13px">表示する行</span>` +
     o.actors.filter((a) => a.count).map((a) =>
-      `<button type="button" class="chip on" data-actor="${esc(a.id)}" title="${esc(a.name)}">${esc(a.label)} ${a.count}</button>`).join("");
+      `<button type="button" class="chip" data-actor="${esc(a.id)}" style="--c:${esc(a.color || "")}" title="${esc(a.name)} (${ROLE_LABEL[a.role]})">${esc(a.label)} ${a.count}</button>`).join("");
+  syncActorChips();
   $("tl-note").textContent = o.scanned
     ? "収集した資料から LLM で取り出した出来事です。各項目の出典 (原文の一節) で確認してください。予定・目標はその後に実施されたとは限りません。"
     : "";
 }
 
-async function loadTimeline() {
+async function loadTimeline(extending = false) {
+  if (!TL.from) setRangePreset();
   const [from, to] = tlRange();
   const params = new URLSearchParams({ date_from: iso(from), date_to: iso(to), personal: $("tl-personal").checked });
-  if ($("tl-field").value) params.set("fields", $("tl-field").value);
+  if (TL.fields.size) params.set("fields", [...TL.fields].join(","));
   const seq = ++TL.seq;
-  $("tl-main").innerHTML = `<div class="tl-empty wait">読み込んでいます</div>`;
+  if (extending) $("tl-past")?.replaceChildren("読み込んでいます…"); // 表示中の年表は消さない
+  else $("tl-main").innerHTML = `<div class="tl-empty wait">読み込んでいます</div>`;
   const res = await fetch("/api/timeline?" + params);
   if (res.status === 401) { lock(); return; }
   const data = await res.json();
@@ -627,56 +864,74 @@ function renderTimeline() {
     return;
   }
   const events = data.events.filter((e) => !TL.hidden.has(e.actor));
-  if (!events.length) {
-    main.innerHTML = `<div class="tl-empty">この条件に当てはまる出来事は、収集した資料にはありません。</div>`;
-    return;
-  }
+  updateAskScope();
   const mode = $("tl-mode").value;
   const narrow = innerWidth < 720; // 詳細パネルの開閉で表示が切り替わらないよう、画面の幅で決める
-  if (mode === "list" || (mode === "auto" && narrow)) renderList(events); else renderLanes(events);
+  const list = mode === "list" || (mode === "auto" && narrow);
+  // 年表では各行の名前の下で表示・非表示を切り替える。一覧には行がないので、上に切り替えのボタンを出す
+  $("tl-actors").hidden = !list;
+  if (!events.length) {
+    const hiddenWith = data.events.length ? TL.hidden.size : 0;
+    main.innerHTML = `<div class="tl-empty">この条件に当てはまる出来事は、収集した資料にはありません。` +
+      (hiddenWith ? `<br>非表示にしている行が ${TL.hidden.size} つあります。<button type="button" class="tl-older" data-unhide-all>すべての行を表示する</button>` : "") +
+      (canGoBack() ? `<br><button type="button" class="tl-older" data-older>さらに前の${PAST_STEP_MONTHS}か月を読み込む</button>` : "") + `</div>`;
+    return;
+  }
+  if (list) renderList(events); else renderLanes(events);
   TL.renderedWidth = main.clientWidth;
   if (TL.selected && !events.some((e) => e.id === TL.selected)) closeDetail(); // 条件を変えて見えなくなった
 }
 // 詳細パネルの開閉で年表の幅が変わったら描き直す
 const refit = () => { if ($("tl-main").clientWidth !== TL.renderedWidth) renderTimeline(); };
+const DETAIL_EMPTY = `<p class="meta">年表の項目を押すと、ここに詳細と根拠の原文を表示します。</p>`;
 function closeDetail() {
   TL.selected = null;
-  $("tl-detail").innerHTML = "";
+  $("tl-detail").innerHTML = DETAIL_EMPTY;
   document.querySelectorAll("#tl-main .sel").forEach((el) => el.classList.remove("sel"));
+  updateAskScope();
+  syncRail();
   refit();
 }
 
 function eventButton(ev, cls, style) {
-  const classes = ["ev", ev.status, `c-${actorClass(ev.actor)}`, cls, ev.personal ? "personal" : "", overdue(ev) ? "overdue" : "",
+  const classes = ["ev", ev.status, `role-${ev.role}`, cls, ev.personal ? "personal" : "", overdue(ev) ? "overdue" : "",
     TL.selected === ev.id ? "sel" : ""].filter(Boolean).join(" ");
-  const tip = `${whenText(ev)} ${STATUS_LABEL[ev.status]}: ${ev.title}${ev.sources.length > 1 ? ` (資料 ${ev.sources.length} 件)` : ""}`;
-  return `<button type="button" class="${classes}" data-ev="${ev.id}" style="${style}" title="${esc(tip)}">` +
-    `${cls.includes("span") ? "" : `<span class="dot"></span>`}<span class="t">${esc(ev.title)}</span></button>`;
+  const tip = `${whenText(ev)} ${ROLE_LABEL[ev.role]}・${STATUS_LABEL[ev.status]}${ev.field ? `・${ev.field}` : ""}: ${ev.title}${ev.sources.length > 1 ? ` (資料 ${ev.sources.length} 件)` : ""}`;
+  return `<button type="button" class="${classes}" data-ev="${ev.id}" style="--c:${esc(actorColor(ev.actor))};${style}" title="${esc(tip)}">` +
+    `<span class="dot"></span><span class="t">${esc(ev.title)}</span></button>`;
 }
 
 function renderLanes(events) {
   const [from, to] = tlRange();
   const span = to - from;
-  const months = Math.max(1, Math.round(span / (30.4 * 86400000)));
+  const months = monthsBetween(from, to);
   const avail = $("tl-main").clientWidth - LABEL_W - UNDATED_W - 2;
-  const W = Math.max(avail, months * MONTH_MIN_PX);
-  const x = (d) => ((d - from) / span) * W;
+  // 1か月の幅は最初の期間で決め、過去を読み足しても変えない (読み足した分だけ左に伸びる)
+  const perMonth = Math.max(avail / (TL.baseMonths || months), MONTH_MIN_PX);
+  // さかのぼれるときは左に余白を付ける。全体が画面に収まっていても左へスクロールでき、余白に入ると前の時期を読み足す
+  const pad = canGoBack() ? PAST_PAD : 0;
+  const core = Math.max(avail, months * perMonth);
+  const W = core + pad;
+  const x = (d) => pad + ((d - from) / span) * core;
 
-  // 目盛り (月)。月が多いときは間引く
-  const step = months > 30 ? 6 : months > 15 ? 3 : 1;
+  // 目盛り。期間が長いときは間引く (何十年もさかのぼったときは年ごと)
+  const step = months > 600 ? 120 : months > 120 ? 12 : months > 30 ? 6 : months > 15 ? 3 : 1;
   let ticks = "", lines = "";
   for (let d = new Date(from.getFullYear(), from.getMonth() + 1, 1); d <= to; d = addMonths(d, 1)) {
     const px = x(d);
-    lines += `<div class="tl-gridline" style="left:${px}px"></div>`;
-    if (d.getMonth() % step === 0) {
-      ticks += `<div class="tl-axis-tick" style="left:${px}px">${d.getMonth() === 0 || !ticks ? `${d.getFullYear()}年` : ""}${d.getMonth() + 1}月</div>`;
+    if (step < 12 || d.getMonth() === 0) lines += `<div class="tl-gridline" style="left:${px}px"></div>`;
+    if ((d.getFullYear() * 12 + d.getMonth()) % step === 0) {
+      ticks += `<div class="tl-axis-tick" style="left:${px}px">${step >= 12 ? `${d.getFullYear()}年` :
+        `${d.getMonth() === 0 || !ticks ? `${d.getFullYear()}年` : ""}${d.getMonth() + 1}月`}</div>`;
     }
   }
   const todayX = x(today);
   const todayLine = todayX >= 0 && todayX <= W ? `<div class="tl-today" style="left:${todayX}px"></div>` : "";
+  // 左端: さかのぼれるか、収集した資料の始まりか
+  const edge = `<div class="tl-edge" id="tl-past">${canGoBack() ? "← 左へスクロールでさかのぼる" : "← これより前の出来事は、まだ収集していません"}</div>`;
 
   let rows = `<div class="tl-row axis"><div class="tl-label"><small>主体</small></div>
-    <div class="tl-track" style="width:${W}px;height:26px">${ticks}${todayLine ? `<div class="tl-today-label" style="left:${todayX}px">今日</div>` : ""}</div>
+    <div class="tl-track" style="width:${W}px;height:26px">${edge}${ticks}${todayLine ? `<div class="tl-today-label" style="left:${todayX}px">今日</div>` : ""}</div>
     <div class="tl-undated" style="font-size:11px;color:var(--muted);padding-top:4px">時期未定の予定</div></div>`;
 
   for (const actor of visibleActors()) {
@@ -689,14 +944,14 @@ function renderLanes(events) {
     for (const ev of dated) {
       const s = parseWhen(ev.start);
       const e = ev.end ? parseWhen(ev.end, true) : ev.status === "ongoing" && s < today ? today : null;
-      let left = Math.max(0, x(s)), width;
+      let left = Math.max(pad, x(s)), width;
       if (e && x(e) - x(s) > 14) {
         width = Math.max(x(Math.min(e, to)) - left, 40);
       } else {
-        left = Math.max(0, left - 6);
+        left = Math.max(pad, left - 6);
         width = Math.min(240, 26 + ev.title.length * 12);
       }
-      if (x(s) > W || (e ? x(e) : x(s)) < 0) continue; // 範囲外
+      if (x(s) > W || (e ? x(e) : x(s)) < pad) continue; // 範囲外
       const labelEnd = left + Math.max(width, e ? Math.min(240, 16 + ev.title.length * 12) : width);
       let row = lanes.findIndex((end) => end < left);
       if (row < 0) { row = lanes.length; lanes.push(0); }
@@ -714,14 +969,41 @@ function renderLanes(events) {
       : expanded && lanes.length > MAX_ROWS ? `<button type="button" class="tl-more" data-expand="${esc(actor.id)}">折りたたむ</button>` : "";
     const undatedHtml = undated.slice(0, expanded ? undefined : 4).map((ev) => eventButton(ev, "undated", "")).join("") +
       (undated.length > 4 && !expanded ? `<button type="button" class="ev many undated" data-expand="${esc(actor.id)}">ほか ${undated.length - 4} 件</button>` : "");
-    rows += `<div class="tl-row"><div class="tl-label ${actorClass(actor.id)}" title="${esc(actor.name)}">${esc(actor.label)}<small>${own.length} 件</small></div>
-      <div class="tl-track" style="width:${W}px;height:${height}px">${lines}${todayLine}${items}${more}</div>
+    rows += `<div class="tl-row"><div class="tl-label" style="--c:${esc(actorColor(actor.id))}" title="${esc(actor.name)}">${esc(actor.label)}` +
+      `${actor.role !== "government" ? `<span class="role-tag">${ROLE_LABEL[actor.role]}</span>` : ""}<small>${own.length} 件</small>` +
+      `<button type="button" class="lane-toggle" data-hide="${esc(actor.id)}" title="${esc(actor.label)}の行を隠して、一番下に移す">非表示</button></div>
+      <div class="tl-track" style="width:${W}px;height:${Math.max(height, LABEL_MIN_H)}px">${lines}${todayLine}${items}${more}</div>
       <div class="tl-undated">${undatedHtml}</div></div>`;
   }
+  // 非表示にした行は一番下に細くまとめ、件数と「表示」ボタンだけを出す
+  const off = TL.data.actors.filter((a) => TL.hidden.has(a.id));
+  if (off.length) {
+    rows += `<div class="tl-row sep"><div class="tl-label">非表示</div><div class="tl-track" style="width:${W}px">` +
+      `<span style="position:sticky;left:${LABEL_W + 8}px">非表示にした行 (${off.length})。「表示」で元の位置に戻ります</span></div><div class="tl-undated" style="background:var(--bg)"></div></div>`;
+    for (const actor of off) {
+      const n = TL.data.events.filter((e) => e.actor === actor.id).length;
+      rows += `<div class="tl-row off"><div class="tl-label" style="--c:${esc(actorColor(actor.id))}" title="${esc(actor.name)}">${esc(actor.label)}` +
+        `<button type="button" class="lane-toggle" data-show="${esc(actor.id)}" title="${esc(actor.label)}の行を元の位置に戻す">表示</button></div>` +
+        `<div class="tl-track" style="width:${W}px;height:26px">${lines}</div><div class="tl-undated">${n} 件</div></div>`;
+    }
+  }
   $("tl-main").innerHTML = `<div class="tl-scroll" id="tl-scroll"><div class="tl-grid" style="width:${LABEL_W + W + UNDATED_W}px">${rows}</div></div>`;
-  // 初めは今日が見えるように横に送る
   const sc = $("tl-scroll");
-  if (sc.scrollWidth > sc.clientWidth) sc.scrollLeft = Math.max(0, todayX - (sc.clientWidth - LABEL_W - UNDATED_W) / 2);
+  const visible = sc.clientWidth - LABEL_W - UNDATED_W;
+  if (TL.keepScroll) {
+    // 過去を読み足したときは、見ていた位置を保つ (左に足した分だけずらす)
+    sc.scrollLeft = TL.keepScroll.left + (TL.keepScroll.months / months) * core;
+    TL.keepScroll = null;
+  } else {
+    // 初めは今日、描き直し (詳細パネルの開閉など) では見ていた時期を中央に。左の余白には入れない
+    sc.scrollLeft = Math.max(pad, x(TL.centerDate || today) - visible / 2);
+  }
+  const armedAt = performance.now() + 400; // 上で位置を合わせたときのスクロールでは読み足さない
+  sc.addEventListener("scroll", () => {
+    if (performance.now() < armedAt) return;
+    TL.centerDate = new Date(from.getTime() + ((sc.scrollLeft + visible / 2 - pad) / core) * span);
+    if (pad && sc.scrollLeft < pad * 0.6) extendPast(); // 左の余白に入ったら前の時期を読み足す
+  }, { passive: true });
 }
 
 function renderList(events) {
@@ -734,12 +1016,16 @@ function renderList(events) {
     if (!todayShown && d && d <= today) { html += `<div class="today-bar">今日 ${iso(today)} ↑ 予定 ／ ↓ これまで</div>`; todayShown = true; }
     const month = d ? `${d.getFullYear()}年${d.getMonth() + 1}月` : "時期未定の予定";
     if (month !== lastMonth) { html += `<div class="month">${month}</div>`; lastMonth = month; }
-    html += `<button type="button" class="tl-item c-${actorClass(ev.actor)} ${TL.selected === ev.id ? "sel" : ""}" data-ev="${ev.id}">
-      <span class="who">${esc(label[ev.actor] || ev.actor)}</span>
+    html += `<button type="button" class="tl-item ${TL.selected === ev.id ? "sel" : ""}" data-ev="${ev.id}" style="--c:${esc(actorColor(ev.actor))}">
+      <span class="who"><i class="dot role-${ev.role} ${ev.status}"></i>${esc(label[ev.actor] || ev.actor)}</span>
       <span class="badge ${ev.status}">${STATUS_LABEL[ev.status]}</span>
-      <span style="flex:1">${esc(ev.title)}${ev.personal ? ` <span class="badge">議員個人</span>` : ""}</span>
+      <span style="flex:1">${esc(ev.title)}${ev.field ? ` <span class="ev-field">${esc(ev.field)}</span>` : ""}${ev.personal ? ` <span class="badge">議員個人</span>` : ""}</span>
       <span class="when">${esc(whenText(ev))}</span></button>`;
   }
+  // 一覧は新しい順なので、さかのぼるときは末尾から読み足す
+  html += canGoBack()
+    ? `<button type="button" class="tl-older" data-older id="tl-past">さらに前の${PAST_STEP_MONTHS}か月を読み込む</button>`
+    : `<div class="meta" style="margin-top:8px">これより前の出来事は、まだ収集していません。</div>`;
   $("tl-main").innerHTML = `<div class="tl-list">${html}</div>`;
 }
 
@@ -750,17 +1036,19 @@ function showDetail(id, scroll = true) {
   document.querySelectorAll("#tl-main .sel").forEach((el) => el.classList.remove("sel"));
   document.querySelectorAll(`#tl-main [data-ev="${id}"]`).forEach((el) => el.classList.add("sel"));
   const actor = TL.data.actors.find((a) => a.id === ev.actor);
-  const sources = ev.sources.map((s) => `
+  const sources = ev.sources.map((s, i) => `
     <div class="ev-src">
       <div><b>${esc(s.source_name)}</b> <span class="meta">${esc(s.org_label)} ・ ${esc(s.date || "日付不明")}</span></div>
       <div>${esc(s.title || "無題")}</div>
       ${s.treatment ? `<div class="meta">発言の扱い: ${esc(s.treatment)}</div>` : ""}
       <blockquote>${esc(s.quote)}</blockquote>
+      <div class="preview" data-preview="${s.event_id}" data-radius="0"${i === 0 ? "" : " hidden"}></div>
+      ${i === 0 ? "" : `<button type="button" class="ask" data-show-preview="${s.event_id}">原文を表示</button>`}
       <a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">原文を開く</a>
     </div>`).join("");
   $("tl-detail").innerHTML = `
-    <button type="button" class="close" aria-label="閉じる" data-close>×</button>
-    <div class="badges"><span class="badge ${ev.status}">${STATUS_LABEL[ev.status]}</span><span class="badge">${esc(ev.kind)}</span>${ev.field ? `<span class="badge">${esc(ev.field)}</span>` : ""}</div>
+    <button type="button" class="close" aria-label="選択を外す" title="選択を外す" data-close>×</button>
+    <div class="badges"><span class="badge" style="--c:${esc(actorColor(ev.actor))};color:var(--ct);border-color:var(--c)">${ROLE_LABEL[ev.role]}</span><span class="badge ${ev.status}">${STATUS_LABEL[ev.status]}</span><span class="badge">${esc(ev.kind)}</span>${ev.field ? `<span class="badge">${esc(ev.field)}</span>` : ""}</div>
     <h3>${esc(actor ? actor.name : ev.actor)}: ${esc(ev.title)}</h3>
     <div class="meta">${esc(whenText(ev))}</div>
     ${ev.personal ? `<div class="warn">議員個人の発言から取り出したものです。党の立場としては扱いません。</div>` : ""}
@@ -768,12 +1056,85 @@ function showDetail(id, scroll = true) {
     <p>${esc(ev.summary || "")}</p>
     <div class="meta">出典 ${ev.sources.length} 件</div>
     ${sources}
-    <button type="button" class="ask" data-ask>この件をチャットで質問する</button>`;
+    <button type="button" class="ask" data-ask>この件について質問する</button>`;
+  updateAskScope();
+  openSide("detail");
   refit();
-  if (scroll && innerWidth <= 900) $("tl-detail").scrollIntoView({ behavior: "smooth", block: "start" });
+  const first = $("tl-detail").querySelector(".preview:not([hidden])");
+  if (first) loadPreview(first);
 }
 
+// 出来事の根拠の原文を、該当の部分 (黄色) とその前後で表示する
+async function loadPreview(box, more = 0) {
+  const radius = +box.dataset.radius + more;
+  box.dataset.radius = radius;
+  const res = await fetch(`/api/timeline/source/${box.dataset.preview}?radius=${radius}`);
+  if (!res.ok) { box.innerHTML = `<div class="chunk">原文を読み込めませんでした。</div>`; return; }
+  const d = await res.json();
+  const mark = (text) => {
+    const t = esc(text), q = esc(d.quote || "");
+    const i = q ? t.indexOf(q) : -1;
+    if (i >= 0) return t.slice(0, i) + `<mark>${q}</mark>` + t.slice(i + q.length);
+    const head = q.slice(0, 15), j = head ? t.indexOf(head) : -1; // 写し方が少し違うときは冒頭だけ印を付ける
+    return j >= 0 ? t.slice(0, j) + `<mark>${head}</mark>` + t.slice(j + head.length) : t;
+  };
+  box.innerHTML = (d.has_before ? `<button type="button" class="more" data-more>前を読む</button>` : "") +
+    d.chunks.map((c) => `<div class="chunk${c.hit ? " hit" : ""}">${c.page ? `<span class="meta">p.${c.page} </span>` : ""}${c.hit ? mark(c.text) : esc(c.text)}</div>`).join("") +
+    (d.has_after ? `<button type="button" class="more" data-more>続きを読む</button>` : "");
+  box.querySelector(".chunk.hit mark, .chunk.hit")?.scrollIntoView({ block: "nearest" });
+}
+
+// ---- 右のサイドパネル (詳細 / 質問 / 履歴) の開閉。右端のアイコンで切り替える。
+// 開いているかとタブは、この閲覧者のブラウザに覚えておく ----
+const SIDE_TITLE = { detail: "詳細", ask: "年表について質問", history: "会話の履歴" };
+function syncRail() {
+  const tab = $("tl-side").dataset.tab;
+  $("tl-rail").querySelectorAll("[data-tab]").forEach((b) => {
+    b.classList.toggle("on", b.dataset.tab === tab);
+    b.setAttribute("aria-pressed", String(document.body.classList.contains("tl-side-on") && b.dataset.tab === tab));
+  });
+  $("tl-rail").querySelector('[data-tab="detail"]').classList.toggle("has", !!TL.selected);
+  $("tl-side-title").textContent = SIDE_TITLE[tab] || "";
+}
+function openSide(tab) {
+  document.body.classList.add("tl-side-on");
+  if (tab) $("tl-side").dataset.tab = tab;
+  if ($("tl-side").dataset.tab === "history") loadHistoryList();
+  syncRail();
+  try { localStorage.setItem("tl-side", $("tl-side").dataset.tab); } catch {}
+  refit();
+}
+function closeSide() {
+  document.body.classList.remove("tl-side-on");
+  syncRail();
+  try { localStorage.setItem("tl-side", ""); } catch {}
+  refit();
+}
+$("tl-side").addEventListener("click", (e) => {
+  if (e.target.closest("[data-side-close]")) closeSide();
+});
+$("tl-rail").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-tab]");
+  if (!b) return;
+  const open = document.body.classList.contains("tl-side-on");
+  open && $("tl-side").dataset.tab === b.dataset.tab ? closeSide() : openSide(b.dataset.tab);
+});
+
+$("tl-main").addEventListener("dblclick", (e) => {
+  const item = e.target.closest("[data-ev]");
+  if (!item || TLQ.controller) return;
+  const ev = TL.data.events.find((x) => x.id === +item.dataset.ev);
+  if (!ev) return;
+  showDetail(ev.id);
+  openSide("ask");
+  $("tl-ask-input").value = `「${ev.title}」について、根拠の資料を読んで、何があったのか (誰が・いつ・何を・その背景と今後) を説明してください`;
+  $("tl-ask-form").requestSubmit();
+});
 $("tl-main").addEventListener("click", (e) => {
+  if (e.target.closest("[data-older]")) { extendPast(); return; }
+  const toggle = e.target.closest("[data-hide], [data-show]");
+  if (toggle) { setHidden(toggle.dataset.hide || toggle.dataset.show, !!toggle.dataset.hide); return; }
+  if (e.target.closest("[data-unhide-all]")) { TL.hidden.clear(); saveHidden(); syncActorChips(); renderTimeline(); return; }
   const exp = e.target.closest("[data-expand]");
   if (exp) {
     const id = exp.dataset.expand;
@@ -785,30 +1146,171 @@ $("tl-main").addEventListener("click", (e) => {
   if (item) showDetail(+item.dataset.ev);
 });
 $("tl-detail").addEventListener("click", (e) => {
+  const more = e.target.closest("[data-more]");
+  if (more) { loadPreview(more.closest(".preview"), 2); return; }
+  const show = e.target.closest("[data-show-preview]");
+  if (show) {
+    const box = $("tl-detail").querySelector(`.preview[data-preview="${show.dataset.showPreview}"]`);
+    box.hidden = false; show.remove(); loadPreview(box);
+    return;
+  }
   if (e.target.closest("[data-close]")) {
     closeDetail();
   } else if (e.target.closest("[data-ask]")) {
+    // タイムラインの質問欄に、選択中の出来事についての質問を用意する
     const ev = TL.data.events.find((x) => x.id === TL.selected);
-    setView("chat");
-    input.value = `「${ev.title}」について、政府と各党のこれまでの動きと今後の予定を整理してください`;
-    input.dispatchEvent(new Event("input"));
-    input.focus();
+    const box = $("tl-ask-input");
+    box.value = `「${ev.title}」について、これまでの経緯と、政府・各党の動き、今後の予定を整理してください`;
+    openSide("ask");
+    box.dispatchEvent(new Event("input"));
+    box.focus();
   }
 });
 $("tl-range").addEventListener("click", (e) => {
   const chip = e.target.closest(".chip");
   if (!chip || chip.classList.contains("on")) return;
   $("tl-range").querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", c === chip));
+  setRangePreset();
   loadTimeline();
 });
+
+// ---- タイムラインについての質問 (表示中の出来事と、その根拠の原文から答える) ----
+const TLQ = { history: [], controller: null, conversation: null };
+function askScope() {
+  const shown = TL.data ? TL.data.actors.filter((a) => !TL.hidden.has(a.id)).map((a) => a.id) : [];
+  return { fields: [...TL.fields], actors: TL.hidden.size ? shown : [], personal: $("tl-personal").checked,
+           date_from: TL.from ? iso(TL.from) : null, date_to: TL.to ? iso(TL.to) : null };
+}
+function updateAskScope() {
+  if (!TL.from) return;
+  const s = askScope();
+  const labels = Object.fromEntries((TL.data?.actors || []).map((a) => [a.id, a.label]));
+  const sel = TL.selected && TL.data?.events.find((e) => e.id === TL.selected);
+  $("tl-ask-scope").textContent = [`${s.date_from}〜${s.date_to}`, s.fields.length ? s.fields.join("・") : "全分野",
+    s.actors.length ? s.actors.map((a) => labels[a] || a).join("・") : "すべての行",
+    sel ? `選択中: ${sel.title}` : ""].filter(Boolean).join(" / ");
+}
+$("tl-ask-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (TLQ.controller) { TLQ.controller.abort(); return; }
+  const box = $("tl-ask-input"), question = box.value.trim();
+  if (!question) return;
+  box.value = ""; box.style.height = "auto";
+  $("tl-ask-log").querySelector(".tl-ask-hint")?.remove();
+  TLQ.controller = new AbortController();
+  $("tl-ask-send").textContent = "中止";
+  const label = `対象: ${$("tl-ask-scope").textContent}`;
+  const { answer, failed, conversation } = await streamTurn({ url: "/api/timeline/ask",
+    body: { question, history: TLQ.history, scope: askScope(), focus: TL.selected,
+            conversation_id: TLQ.conversation, label },
+    parent: $("tl-ask-log"), question, label: `対象: ${$("tl-ask-scope").textContent}`,
+    signal: TLQ.controller.signal, scrollEl: $("tl-ask-log") });
+  TLQ.controller = null;
+  $("tl-ask-send").textContent = "質問";
+  if (conversation) TLQ.conversation = conversation;
+  if (!failed && answer) TLQ.history.push({ role: "user", content: question }, { role: "assistant", content: answer });
+  box.focus();
+});
+$("tl-ask-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); $("tl-ask-form").requestSubmit(); }
+});
+$("tl-ask-input").addEventListener("input", (e) => { e.target.style.height = "auto"; e.target.style.height = e.target.scrollHeight + "px"; });
+$("tl-ask-log").addEventListener("click", openCite);
+
+// ---- 会話の履歴 (チャットとタイムラインの質問で共通。サーバーに保存) ----
+const KIND_LABEL = { chat: "チャット", timeline: "タイムライン" };
+async function loadHistoryList() {
+  const res = await fetch("/api/conversations");
+  if (!res.ok) return;
+  const items = await res.json();
+  const current = [chatConversation, TLQ.conversation];
+  const html = items.length ? items.map((c) => `
+    <div class="h-item${current.includes(c.id) ? " on" : ""}">
+      <span class="h-kind ${c.kind}">${KIND_LABEL[c.kind] || c.kind}</span>
+      <button type="button" class="h-open" data-open-conv="${c.id}"><span class="t">${esc(c.title)}</span>
+        <span class="meta">${esc(c.updated_at)} ・ ${c.turns} 往復</span></button>
+      <button type="button" class="h-del" data-del-conv="${c.id}" aria-label="削除" title="削除">×</button>
+    </div>`).join("") : `<p class="meta" style="padding:8px">まだ会話はありません。質問すると、ここに残ります。</p>`;
+  $("history-list").innerHTML = html;
+  $("tl-history-list").innerHTML = html;
+}
+async function openConversation(id) {
+  const res = await fetch(`/api/conversations/${id}`);
+  if (!res.ok) return;
+  const conv = await res.json();
+  const pairs = [];
+  for (let i = 0; i + 1 < conv.messages.length; i += 2) pairs.push([conv.messages[i], conv.messages[i + 1]]);
+  const turns = pairs.map(([q, a]) => ({ q: q.content, label: q.meta.label, a: a.content, sources: a.meta.sources }));
+  const msgs = pairs.flatMap(([q, a]) => [{ role: "user", content: q.content }, { role: "assistant", content: a.content }]);
+  if (conv.kind === "timeline") {
+    if (TLQ.controller) return;
+    setView("timeline");
+    $("tl-ask-log").innerHTML = "";
+    turns.forEach((t) => renderSavedTurn($("tl-ask-log"), t.q, t.label, t.a, t.sources));
+    TLQ.history = msgs; TLQ.conversation = conv.id;
+    openSide("ask");
+    $("tl-ask-log").scrollTop = $("tl-ask-log").scrollHeight;
+  } else {
+    if (controller) return;
+    setView("chat");
+    $("welcome")?.remove();
+    log.querySelectorAll(".turn").forEach((t) => t.remove());
+    turns.forEach((t) => renderSavedTurn(log, t.q, t.label, t.a, t.sources));
+    history = msgs; chatConversation = conv.id;
+    scroller.scrollTop = scroller.scrollHeight;
+  }
+  $("history").hidden = true;
+}
+function onHistoryClick(e) {
+  const open = e.target.closest("[data-open-conv]");
+  if (open) { openConversation(+open.dataset.openConv); return; }
+  const del = e.target.closest("[data-del-conv]");
+  if (del && confirm("この会話を履歴から削除します。元に戻せません。よろしいですか？")) {
+    const id = +del.dataset.delConv;
+    fetch(`/api/conversations/${id}`, { method: "DELETE" }).then(() => {
+      if (chatConversation === id) chatConversation = null;
+      if (TLQ.conversation === id) TLQ.conversation = null;
+      loadHistoryList();
+    });
+  }
+}
+$("history-list").addEventListener("click", onHistoryClick);
+$("tl-history-list").addEventListener("click", onHistoryClick);
+$("history").addEventListener("click", (e) => { if (e.target.closest("[data-history-close]")) $("history").hidden = true; });
+$("history-btn").addEventListener("click", () => {
+  $("history").hidden = !$("history").hidden;
+  if (!$("history").hidden) loadHistoryList();
+});
+$("tl-ask-new").addEventListener("click", () => {
+  if (TLQ.controller) return;
+  TLQ.history = []; TLQ.conversation = null;
+  $("tl-ask-log").innerHTML = "";
+  $("tl-ask-input").focus();
+});
+$("tl-detail").innerHTML = DETAIL_EMPTY;
+(() => {
+  let saved = null;
+  try { saved = localStorage.getItem("tl-side"); } catch {}
+  $("tl-side").dataset.tab = saved || "ask";
+  if (saved && innerWidth > 900) openSide(saved); else syncRail();
+})();
 $("tl-actors").addEventListener("click", (e) => {
   const chip = e.target.closest(".chip");
-  if (!chip) return;
-  chip.classList.toggle("on");
-  chip.classList.contains("on") ? TL.hidden.delete(chip.dataset.actor) : TL.hidden.add(chip.dataset.actor);
-  renderTimeline();
+  if (chip) setHidden(chip.dataset.actor, !TL.hidden.has(chip.dataset.actor));
 });
-$("tl-field").addEventListener("change", loadTimeline);
+// 分野: ボタンでグループ別の選択パネルを開く。選ぶたびに年表を読み直す (パネルは開いたまま)
+$("tl-fieldbar").addEventListener("click", (e) => {
+  if (e.target.closest("#tl-field-btn")) { setFieldPop($("tl-fieldpop").hidden); return; }
+  const chip = e.target.closest("[data-field]"), off = e.target.closest("[data-field-off]");
+  if (!chip && !off && !e.target.closest("[data-field-clear]")) return;
+  if (chip) TL.fields.has(chip.dataset.field) ? TL.fields.delete(chip.dataset.field) : TL.fields.add(chip.dataset.field);
+  else if (off) TL.fields.delete(off.dataset.fieldOff);
+  else TL.fields.clear();
+  syncFields();
+  loadTimeline();
+});
+document.addEventListener("click", (e) => { if (!e.target.closest("#tl-fieldbar")) setFieldPop(false); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("tl-fieldpop").hidden) setFieldPop(false); });
 $("tl-personal").addEventListener("change", loadTimeline);
 $("tl-mode").addEventListener("change", renderTimeline);
 let resizeTimer;

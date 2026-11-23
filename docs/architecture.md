@@ -73,7 +73,20 @@ documents (政党・行政機関の資料、国会の発言)
    ↓ timeline/view.py     別の資料に載った同じ主体の同じ出来事を1件にまとめる
    ↓ GET /api/timeline     ?fields=&actors=&personal=&date_from=&date_to=
    ↓ web/index.html        スイムレーン (行=主体、横=時間、今日の線) / 狭い画面では一覧
+   ↓ POST /api/timeline/ask  表示中の範囲の出来事について質問 (timeline/ask.py)
 ```
+
+- 表示範囲は今日の前後から始め、左端の余白までスクロールすると `date_from` を6か月前へずらして取り直す
+  (1か月の幅は最初の期間で決めて変えず、見ていた位置を保つ)。収集した出来事のいちばん古い時期より前へは進まない
+- 会話の履歴 (`core/conversations.py`、`conversations` / `conversation_messages`): チャットとタイムラインの質問で同じ表を使い
+  `kind` で区別する。回答が最後まで生成できたときだけ、質問 (絞り込み・対象の表示) と回答 (出典の一覧) を1往復として保存し、
+  `conversation` イベントで会話の ID を返す。`GET/DELETE /api/conversations[/{id}]`。他の利用者の会話は読めない
+- 出来事の原文のプレビュー: `GET /api/timeline/source/{event_id}?radius=` で根拠のチャンクと前後を返す
+- 抽出の順番: 主体ごとに新しい順に並べて順番に1件ずつ取る (政府の答弁が多く、党の資料が後回しになるのを防ぐ)
+- 質問 (`timeline/ask.py`): 表示中の条件で出来事を取り直し、質問の語に近いもの (選択中の項目を先頭に、最大12件。
+  一致が3件未満なら主体ごとに偏りなく補う) を選ぶ。その根拠のチャンクを番号付きの資料として、
+  チャットの回答規則に年表用の規則 (予定は実施を意味しない、与党・野党を取り違えない など) を足して生成する。
+  順番待ち・回数の精算は `core/answer_service.answer(plan_fn=...)` を使う
 
 - 主体 (行) は `source/actors.json`。政党の Web サイトの資料はその党、行政機関の資料は政府。
   国会の発言は、大臣・政務官・官僚の答弁を政府、議員の発言を会派から党に割り当てる
@@ -91,6 +104,10 @@ documents (政党・行政機関の資料、国会の発言)
 - 会議録の発言は量が多いので、行動・予定を表す語 (法案・閣議決定・予定・年度など) を含むものだけを LLM に渡す。
   渡さなかった発言も `event_scans` に記録し、再び調べない
 - 議員個人の発言 (`speech_treatment` が「議員個人の発言」) から取り出したものは `personal = 1`。既定では表示しない
+- 分野の絞り込みは、出来事に LLM が付けた分野 (`events.field`) で行い、それがなければ資料の分野タグ (`document_tags`) を使う。
+  どちらも `source/taxonomy.json` の同じ分類表
+- 与党・野党は `source/actors.json` の `ruling` (与党だった期間) と出来事の時期から決め (`view.role`)、
+  画面では印の形 (○ 与党 / □ 野党 / ◇ 政府) で示す。色は `color`
 - 1回の処理数は `timeline.max_per_run` (新しい資料から順)。定時更新の `events` の手順で少しずつ進む
 
 ## ファイル構成
@@ -124,6 +141,7 @@ documents (政党・行政機関の資料、国会の発言)
 | `llm/tunnel.py` | LLM サーバーへの SSH ポート転送を serve / bot と一緒に起動 |
 | `timeline/events.py` | 資料からタイムラインの出来事・予定を取り出す (LLM) |
 | `timeline/view.py` | タイムラインの API 用データ (同じ出来事をまとめる) |
+| `timeline/ask.py` | タイムラインで表示中の出来事についての質問 |
 | `source/actors.json` | タイムラインの主体 (政府と各党) と会議録の会派名の対応 |
 | `nihon-kanshi.spec` | exe 化 (PyInstaller) の設定 |
 
